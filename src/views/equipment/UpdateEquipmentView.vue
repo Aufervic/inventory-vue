@@ -64,7 +64,7 @@ async function actualizarEquipo() {
         enviado.value = true
         console.log('Equipo actualizado con éxito:', response.data)
     } catch (error) {
-        console.error('Error al actualizar equipo:', error)
+        console.error('Error al actualizar Equipo:', error)
     }
 }
 

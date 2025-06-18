@@ -6,7 +6,7 @@ const props = defineProps(['id'])
 
 const form = reactive({
     id: '',
-    nombre: '',
+    estado: '',
 })
 
 // Bandera para mostrar mensaje de éxito
@@ -21,11 +21,11 @@ onMounted(async () => {
 // Función al enviar el formulario
 async function actualizarUbicacion() {
     try {
-        //const response = await axios.put(`http://127.0.0.1:8000/api/ubicaciones/${props.id}`, form)
+        //const response = await axios.put(`http://127.0.0.1:8000/api/estados/${props.id}`, form)
         enviado.value = true
-        console.log('Ubicación actualizada con éxito:', undefined)
+        console.log('Estado actualizado con éxito:', undefined)
     } catch (error) {
-        console.error('Error al actualizar Ubicación:', error)
+        console.error('Error al actualizar Estado:', error)
     }
 }
 
@@ -37,8 +37,8 @@ async function actualizarUbicacion() {
 
         <form @submit.prevent="actualizarUbicacion">
             <div class="mb-3">
-                <label for="nombre" class="form-label fw-bold">Nombre</label>
-                <input type="text" id="nombre" class="form-control" v-model="form.nombre"
+                <label for="estado" class="form-label fw-bold">Estado</label>
+                <input type="text" id="estado" class="form-control" v-model="form.estado"
                     required />
             </div>
             <!-- Botón de envío -->

@@ -9,6 +9,11 @@ import ListUbicationView from '@/views/ubication/ListUbicationView.vue'
 import CreateUbicationView from '@/views/ubication/CreateUbicationView.vue'
 import UpdateUbicationView from '@/views/ubication/UpdateUbicationView.vue'
 import DetailUbicationView from '@/views/ubication/DetailUbicationView.vue'
+import ListStateView from '@/views/state/ListStateView.vue'
+import CreateStateView from '@/views/state/CreateStateView.vue'
+import UpdateStateView from '@/views/state/UpdateStateView.vue'
+import DetailStateView from '@/views/state/DetailStateView.vue'
+
 
 const routes = [
   { path: '/', component: ListEquipmentView },
@@ -18,8 +23,13 @@ const routes = [
   { path: '/dashboard', component: DashBoardView },
   { path: '/ubication', component: ListUbicationView },
   { path: '/ubication/new', component: CreateUbicationView },
-  { path: '/ubication/update/:id', component: UpdateUbicationView },
+  { path: '/ubication/update/:id', component: UpdateUbicationView, props: true },
   { path: '/ubication/:id', component: DetailUbicationView, props: true },
+  { path: '/state', component: ListStateView },
+  { path: '/state/new', component: CreateStateView },
+  { path: '/state/update/:id', component: UpdateStateView, props: true },
+  { path: '/state/:id', component: DetailStateView, props: true },
+
 ]
 
 const router = createRouter({

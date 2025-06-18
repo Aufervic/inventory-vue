@@ -4,7 +4,7 @@ import { reactive, ref, onMounted } from 'vue'
 
 const form = reactive({
     id: '',
-    nombre: '',
+    estado: '',
 })
 
 // Bandera para mostrar mensaje de éxito
@@ -17,13 +17,13 @@ onMounted(() => {
 })
 
 
-async function crearUbicacion() {
+async function crearEstado() {
     try {
-        //const response = await axios.post('http://127.0.0.1:8000/api/ubicaciones/', form)
+        //const response = await axios.post('http://127.0.0.1:8000/api/estados/', form)
         enviado.value = true
-        console.log('Ubicación creada con éxito:', undefined)
+        console.log('Estado creado con éxito:', undefined)
     } catch (error) {
-        console.error('Error al crear Ubicación:', error)
+        console.error('Error al crear Estado:', error)
     }
 }
 
@@ -31,13 +31,13 @@ async function crearUbicacion() {
 
 <template>
     <div class="container mt-4">
-        <h2>Crear Ubicación</h2>
+        <h2>Crear Estado</h2>
         <div v-if="loading">Cargando datos</div>
         <div v-else>
-            <form @submit.prevent="crearUbicacion">
+            <form @submit.prevent="crearEstado">
                 <div class="mb-3">
-                    <label for="nombre" class="form-label fw-bold">Nombre</label>
-                    <input type="text" id="nombre" class="form-control" v-model="form.nombre"
+                    <label for="estado" class="form-label fw-bold">Estado</label>
+                    <input type="text" id="estado" class="form-control" v-model="form.estado"
                         required />
                 </div>
  
