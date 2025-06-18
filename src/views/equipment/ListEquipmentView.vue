@@ -2,16 +2,16 @@
 
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-const data = ref([])
+const equipments = ref([])
 
 onMounted(() => {
   axios
     .get('http://127.0.0.1:8000/api/equipos/')
-    .then(response => (data.value = response.data))
+    .then(response => (equipments.value = response.data))
     .catch(error => console.log(error))
 })
 
-const post = () => {
+const createNewEquipment = () => {
   console.log("POST")
 }
 
@@ -19,8 +19,20 @@ function editar(equipment) {
   alert(`Editar: ${equipment.codigo_patrimonial}`)
 }
 
-function eliminar(equipment) {
-  alert(`Eliminar: ${equipment.codigo_patrimonial}`)
+async function eliminarEquipo(equipment) {
+  //alert(`Eliminar: ${equipment.codigo_patrimonial}`)
+  if (!confirm(`¿Estás seguro de que deseas eliminar el equipo "${equipment.codigo_patrimonial}"?`)) {
+    return;
+  }
+
+  try {
+    await axios.delete(`http://127.0.0.1:8000/api/equipos/${equipment.id}`);
+    equipments.value = equipments.value.filter(e => e.id !== equipment.id);
+    alert('Equipo eliminado correctamente');
+  } catch (error) {
+    console.error('Error al eliminar el equipo:', error);
+    alert('Hubo un problema al eliminar el equipo');
+  }
 }
 
 function verDetalles(equipment) {
@@ -32,7 +44,9 @@ function verDetalles(equipment) {
 <template>
   <div>
     <h1>Equipos</h1>
-    <button @click="post">POST</button>
+    <router-link to="/equipment/new">
+      <button @click="createNewEquipment">Agregar Equipo Nuevo</button>
+    </router-link>
     <div class="container mt-4">
       <h2>Tabla de Equipos</h2>
       <table class="table table-striped table-bordered">
@@ -55,8 +69,8 @@ function verDetalles(equipment) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(equipment, index) in data" :key="index">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="(equipment, index) in equipments" :key="index">
+            <td>{{ equipment.id }}</td>
             <td>{{ equipment.codigo_patrimonial }}</td>
             <td>{{ equipment.numero_serie }}</td>
             <td>{{ equipment.marca }}</td>
@@ -66,9 +80,9 @@ function verDetalles(equipment) {
             <td>{{ equipment.numero_o_c }}</td>
             <td>{{ equipment.numero_nea }}</td>
             <td>{{ equipment.centro_costos }}</td>
-            <td>{{ equipment.tipo_ingreso }}</td>
-            <td>{{ equipment.estado }}</td>
-            <td>{{ equipment.ubicacion }}</td>
+            <td>{{ equipment.tipo_ingreso.nombre }}</td>
+            <td>{{ equipment.estado.estado }}</td>
+            <td>{{ equipment.ubicacion.nombre }}</td>
             <td>
               <div class="dropdown">
                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -83,7 +97,7 @@ function verDetalles(equipment) {
                     <router-link :to="`/equipment/update/${equipment.id}`" class="dropdown-item">Editar</router-link>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#" @click.prevent="eliminar(equipment)">Eliminar</a>
+                    <a class="dropdown-item" href="#" @click.prevent="eliminarEquipo(equipment)">Eliminar</a>
                   </li>
                 </ul>
               </div>

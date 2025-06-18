@@ -2,6 +2,7 @@ import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
 
 import ListEquipmentView from './../views/equipment/ListEquipmentView.vue'
 import UpdateEquipmentView from './../views/equipment/UpdateEquipmentView.vue'
+import CreateEquipmentView from './../views/equipment/CreateEquipmentView.vue'
 import DetailEquipmentView from './../views/equipment/DetailEquipmentView.vue'
 import DashBoardView from './../views/DashboardView.vue'
 
@@ -10,6 +11,7 @@ import DashBoardView from './../views/DashboardView.vue'
 const routes = [
   { path: '/', component: ListEquipmentView },
   { path: '/equipment/update/:id', component: UpdateEquipmentView, props: true},
+  { path: '/equipment/new', component: CreateEquipmentView},
   { path: '/equipment/:id', component: DetailEquipmentView, props: true},
   { path: '/dashboard', component: DashBoardView },
 ]

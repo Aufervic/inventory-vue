@@ -60,11 +60,11 @@ const estadoClase = computed(() => {
                             <li class="list-group-item"><strong>Número OC:</strong> {{ equipment.numero_o_c }}</li>
                             <li class="list-group-item"><strong>Número NEA:</strong> {{ equipment.numero_nea }}</li>
                             <li class="list-group-item"><strong>Centro de Costos:</strong> {{ equipment.centro_costos }}</li>
-                            <li class="list-group-item"><strong>Tipo de Ingreso:</strong> {{ equipment.tipo_ingreso }} </li>
+                            <li class="list-group-item"><strong>Tipo de Ingreso:</strong> {{ equipment.tipo_ingreso?.nombre }} </li>
                             <li class="list-group-item"><strong>Estado:</strong>
-                                <span :class="estadoClase">{{ equipment.estado }}</span>
+                                <span :class="estadoClase">{{ equipment.estado?.estado }}</span>
                             </li>
-                            <li class="list-group-item"><strong>Ubicación:</strong> {{ equipment.ubicacion }} </li>
+                            <li class="list-group-item"><strong>Ubicación:</strong> {{ equipment.ubicacion?.nombre }} </li>
                         </ul>
                         <router-link to="/" class="btn btn-outline-primary btn-sm">← Volver</router-link>
                     </div>
