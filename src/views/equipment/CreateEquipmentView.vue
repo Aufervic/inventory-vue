@@ -66,7 +66,7 @@ async function crearEquipo() {
 
 <template>
     <div class="container mt-4">
-        <h2>Formulario de registro</h2>
+        <h2>Crear Equipo Nuevo</h2>
         <div v-if="loading">Cargando datos</div>
         <div v-else>
             <form @submit.prevent="crearEquipo">

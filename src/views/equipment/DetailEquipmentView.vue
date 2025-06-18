@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-import { useRoute } from 'vue-router'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 

@@ -1,14 +1,10 @@
 <script setup>
-
+import Navbar from './components/layout/Navbar.vue';
 
 </script>
 
 <template>
-  <nav>
-      <router-link to="/">Inicio</router-link>
-      |
-      <router-link to="/dashboard">Dashboard</router-link>
-    </nav>
+  <Navbar />
   <router-view />
 </template>
 
