@@ -13,22 +13,33 @@ import ListStateView from '@/views/state/ListStateView.vue'
 import CreateStateView from '@/views/state/CreateStateView.vue'
 import UpdateStateView from '@/views/state/UpdateStateView.vue'
 import DetailStateView from '@/views/state/DetailStateView.vue'
-
+import ListMovementView from '@/views/movement/ListMovementView.vue'
+import CreateMovementView from '@/views/movement/CreateMovementView.vue'
+import UpdateMovementView from '@/views/movement/UpdateMovementView.vue'
+import DetailMovementView from '@/views/movement/DetailMovementView.vue'
 
 const routes = [
   { path: '/', component: ListEquipmentView },
   { path: '/equipment/new', component: CreateEquipmentView},
   { path: '/equipment/update/:id', component: UpdateEquipmentView, props: true},
   { path: '/equipment/:id', component: DetailEquipmentView, props: true},
+  
   { path: '/dashboard', component: DashBoardView },
+  
   { path: '/ubication', component: ListUbicationView },
   { path: '/ubication/new', component: CreateUbicationView },
   { path: '/ubication/update/:id', component: UpdateUbicationView, props: true },
   { path: '/ubication/:id', component: DetailUbicationView, props: true },
+  
   { path: '/state', component: ListStateView },
   { path: '/state/new', component: CreateStateView },
   { path: '/state/update/:id', component: UpdateStateView, props: true },
   { path: '/state/:id', component: DetailStateView, props: true },
+  
+  { path: '/movement', component: ListMovementView},
+  { path: '/movement/new', component: CreateMovementView},
+  { path: '/movement/update/:id', component: UpdateMovementView, props: true},
+  { path: '/movement/:id', component: DetailMovementView, props: true},
 
 ]
 

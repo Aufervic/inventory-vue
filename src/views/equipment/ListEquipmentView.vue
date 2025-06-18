@@ -11,13 +11,6 @@ onMounted(() => {
     .catch(error => console.log(error))
 })
 
-const createNewEquipment = () => {
-  console.log("POST")
-}
-
-function editar(equipment) {
-  alert(`Editar: ${equipment.codigo_patrimonial}`)
-}
 
 async function eliminarEquipo(equipment) {
   //alert(`Eliminar: ${equipment.codigo_patrimonial}`)
@@ -35,17 +28,13 @@ async function eliminarEquipo(equipment) {
   }
 }
 
-function verDetalles(equipment) {
-  alert(`Detalles de: ${equipment.codigo_patrimonial}`)
-}
-
 </script>
 
 <template>
   <div>
     <h1>Equipos</h1>
     <router-link to="/equipment/new">
-      <button @click="createNewEquipment">Agregar Equipo Nuevo</button>
+      <button>Agregar Equipo Nuevo</button>
     </router-link>
     <div class="container mt-4">
       <h2>Tabla de Equipos</h2>

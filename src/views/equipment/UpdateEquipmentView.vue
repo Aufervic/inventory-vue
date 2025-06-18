@@ -50,7 +50,7 @@ onMounted(async () => {
         ubicaciones.value = ubicacionesResponse.data;
 
     } catch (error) {
-        console.error('Error al cargar Cargar Datos:', error)
+        console.error('Error al cargar Datos:', error)
     } finally {
 
     }
