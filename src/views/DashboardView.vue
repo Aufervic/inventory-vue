@@ -1,13 +1,6 @@
-<script setup>
-
-</script>
-
 <template>
-    <div>
-        Dashboard
-    </div>
+  <div>
+    <h1>Dashboard</h1>
+    <p>Bienvenido al sistema de inventario.</p>
+  </div>
 </template>
-
-<style lang="scss" scoped>
-
-</style>
