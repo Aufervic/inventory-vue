@@ -1,16 +1,30 @@
 <script setup>
-
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 //import axios from 'axios'
+
+const filtro = ref('')
+const paginaActual = ref(1)
+const porPagina = 4
 
 const movimientos = ref([])
 
 onMounted(() => {
   movimientos.value = [
-    {id: 1, fecha_movimiento: "2025-06-17", observaciones: "Un observación God", id_equipo_id: 1, ubicacion_id: 1},
-    {id: 2, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3}
+    { id: 1, fecha_movimiento: "2025-06-17", observaciones: "Una observación God", id_equipo_id: 1, ubicacion_id: 1 },
+    { id: 2, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
+    { id: 3, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
+    { id: 4, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
+    { id: 5, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
+    { id: 6, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
+    { id: 7, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
   ]
 })
+
+// Reiniciar página al cambiar filtro
+watch(filtro, () => {
+  paginaActual.value = 1
+})
+
 
 
 async function eliminarMovimiento(movimiento) {
@@ -28,17 +42,55 @@ async function eliminarMovimiento(movimiento) {
   }
 }
 
+
+
+const movimientosFiltrados = computed(() => {
+  const f = filtro.value.toLowerCase()
+  return movimientos.value.filter(
+    (m) =>
+      m.fecha_movimiento.toLowerCase().includes(f) ||
+      m.observaciones.toLowerCase().includes(f) ||
+      ("" + m.id_equipo_id).toLowerCase().includes(f) ||
+      ("" + m.ubicacion_id).toLowerCase().includes(f)
+  )
+})
+
+const totalPaginas = computed(() =>
+  Math.ceil(movimientosFiltrados.value.length / porPagina)
+)
+
+const movimientosPaginados = computed(() => {
+  const inicio = (paginaActual.value - 1) * porPagina
+  return movimientosFiltrados.value.slice(inicio, inicio + porPagina)
+})
+
+
 </script>
 
+
+
 <template>
-  <div>
-    <h1>Movimientos</h1>
-    <router-link to="/movement/new">
-      <button>Agregar Movimiento Nuevo</button>
-    </router-link>
-    <div class="container mt-4">
-      <h2>Tabla de Movimientos</h2>
-      <table class="table table-striped table-bordered">
+  <div class="container-fluid">
+    <h1 class="mb-4">
+      <i class="bi bi-arrow-left-right me-2"></i> Movimientos
+    </h1>
+
+    <!-- Botón nuevo -->
+    <div class="mb-3 text-end">
+      <router-link to="/movement/new" class="btn btn-success">
+        <i class="bi bi-plus-circle me-1"></i> Nuevo Movimiento
+      </router-link>
+    </div>
+
+    <!-- Búsqueda -->
+    <div class="mb-3">
+      <input v-model="filtro" type="text" class="form-control"
+        placeholder="Buscar por equipo, ubicación, observaciones, etc." />
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover align-middle">
         <thead class="table-dark">
           <tr>
             <th>#</th>
@@ -51,39 +103,52 @@ async function eliminarMovimiento(movimiento) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(movimiento, index) in movimientos" :key="index">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="(movimiento, index) in movimientosPaginados" :key="index">
+            <td>{{ index + 1 + (paginaActual - 1) * porPagina }}</td>
             <td>{{ movimiento.id }}</td>
             <td>{{ movimiento.fecha_movimiento }}</td>
             <td>{{ movimiento.observaciones }}</td>
             <td>{{ movimiento.id_equipo_id }}</td>
             <td>{{ movimiento.ubicacion_id }}</td>
-            <td>
-              <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  Acciones
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <router-link :to="`/movement/${movimiento.id}`" class="dropdown-item">Ver Detalles</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="`/movement/update/${movimiento.id}`" class="dropdown-item">Editar</router-link>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#" @click.prevent="eliminarMovimiento(movimiento)">Eliminar</a>
-                  </li>
-                </ul>
-              </div>
 
+            <td class="text-center">
+              <router-link :to="`/movement/${movimiento.id}`" class="btn btn-sm btn-outline-primary me-1"
+                title="Ver detalles de Movimiento">
+                <i class="bi bi-eye"></i>
+              </router-link>
+
+              <router-link :to="`/movement/update/${movimiento.id}`" class="btn btn-sm btn-outline-success me-1"
+                title="Editar Movimiento">
+                <i class="bi bi-pencil"></i>
+              </router-link>
+
+              <button class="btn btn-sm btn-outline-danger" title="Eliminar Movimiento"
+                @click.prevent="eliminarMovimiento(movimiento)">
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
+
+          </tr>
+          <tr v-if="movimientosFiltrados.length === 0">
+            <td colspan="6" class="text-center">No se encontraron movimientos.</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Paginación -->
+    <nav v-if="totalPaginas > 1">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: paginaActual === 1 }">
+          <button class="page-link" @click="paginaActual--" :disabled="paginaActual === 1">Anterior</button>
+        </li>
+        <li v-for="pagina in totalPaginas" :key="pagina" class="page-item" :class="{ active: pagina === paginaActual }">
+          <button class="page-link" @click="paginaActual = pagina">{{ pagina }}</button>
+        </li>
+        <li class="page-item" :class="{ disabled: paginaActual === totalPaginas }">
+          <button class="page-link" @click="paginaActual++" :disabled="paginaActual === totalPaginas">Siguiente</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
-
-
-<style scoped></style>

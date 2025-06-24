@@ -17,8 +17,10 @@ import ListMovementView from '@/views/movement/ListMovementView.vue'
 import CreateMovementView from '@/views/movement/CreateMovementView.vue'
 import UpdateMovementView from '@/views/movement/UpdateMovementView.vue'
 import DetailMovementView from '@/views/movement/DetailMovementView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { isAuth } from '@/store/auth'
 
 const routes = [
   {
@@ -46,6 +48,7 @@ const routes = [
     ]
   },
 
+  { path:'/login', component: LoginView}
 
 
 
@@ -54,6 +57,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+// guardia global que protege las rutas
+router.beforeEach((to, from, next) => {
+  //const isAuth = localStorage.getItem('auth') === 'true'
+  const publicPages = ['/login']
+  const authRequired = !publicPages.includes(to.path)
+
+  if (authRequired && !isAuth.value) {
+    next('/login')
+  } else if (to.path === '/login' && isAuth.value) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -33,7 +33,7 @@ async function actualizarUbicacion() {
 
 <template>
     <div class="container mt-4">
-        <h2>Actualizar Ubicación</h2>
+        <h2>Actualizar Estado</h2>
 
         <form @submit.prevent="actualizarUbicacion">
             <div class="mb-3">

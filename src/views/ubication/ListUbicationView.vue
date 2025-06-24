@@ -1,47 +1,94 @@
 <script setup>
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 //import axios from 'axios'
+
+// Paginación
+const filtro = ref('')
+const paginaActual = ref(1)
+const porPagina = 4
 
 const ubicaciones = ref([])
 
 onMounted(() => {
     ubicaciones.value = [
-        {id: 1, nombre: "Ubicación 1"},
-        {id: 2, nombre: "Ubicación 2"},
-        {id: 3, nombre: "Ubicación 3"},
+        { id: 1, nombre: "Ubicación 1" },
+        { id: 2, nombre: "Ubicación 2" },
+        { id: 3, nombre: "Ubicación 3" },
+        { id: 4, nombre: "Ubicación 4" },
+        { id: 5, nombre: "Ubicación 5" },
+        { id: 6, nombre: "Ubicación 6" },
     ]
- 
+
+})
+
+
+// Reiniciar página al cambiar filtro
+watch(filtro, () => {
+    paginaActual.value = 1
 })
 
 
 async function eliminarUbicacion(ubicacion) {
-  if (!confirm(`¿Estás seguro de que deseas eliminar la Ubicación "${ubicacion.nombre}"?`)) {
-    return;
-  }
+    if (!confirm(`¿Estás seguro de que deseas eliminar la Ubicación "${ubicacion.nombre}"?`)) {
+        return;
+    }
 
-  try {
-    //await axios.delete(`http://127.0.0.1:8000/api/ubicaciones/${ubicacion.id}`);
-    ubicaciones.value = ubicaciones.value.filter(e => e.id !== ubicacion.id);
-    alert('Ubicación eliminada correctamente.');
-  } catch (error) {
-    console.error('Error al eliminar la Ubicación:', error);
-    alert('Hubo un problema al eliminar la Ubicación');
-  }
+    try {
+        //await axios.delete(`http://127.0.0.1:8000/api/ubicaciones/${ubicacion.id}`);
+        ubicaciones.value = ubicaciones.value.filter(e => e.id !== ubicacion.id);
+        alert('Ubicación eliminada correctamente.');
+    } catch (error) {
+        console.error('Error al eliminar la Ubicación:', error);
+        alert('Hubo un problema al eliminar la Ubicación');
+    }
 }
+
+
+
+// paginación
+const ubicacionesFiltradas = computed(() => {
+    const f = filtro.value.toLowerCase()
+    return ubicaciones.value.filter(
+        (estd) =>
+            ("" + estd.id).toLowerCase().includes(f) ||
+            estd.nombre.toLowerCase().includes(f)
+    )
+})
+
+const totalPaginas = computed(() =>
+    Math.ceil(ubicacionesFiltradas.value.length / porPagina)
+)
+
+const ubicacionesPaginadas = computed(() => {
+    const inicio = (paginaActual.value - 1) * porPagina
+    return ubicacionesFiltradas.value.slice(inicio, inicio + porPagina)
+})
 
 </script>
 
 
 <template>
-    <div>
-        <h1>Ubicaciones</h1>
-        <router-link to="/ubication/new">
-            <button>Agregar Nueva Ubicación</button>
-        </router-link>
-        <div class="container mt-4">
-            <h2>Tabla de Ubicaciones</h2>
-            <table class="table table-striped table-bordered">
+    <div class="container-fluid">
+        <h1 class="mb-4">
+            <i class="bi bi-geo-alt me-2"></i> Ubicaciones
+        </h1>
+
+        <!-- Botón nuevo -->
+        <div class="mb-3 text-end">
+            <router-link to="/ubication/new" class="btn btn-success">
+                <i class="bi bi-plus-circle me-1"></i> Nueva Ubicación
+            </router-link>
+        </div>
+
+        <!-- Búsqueda -->
+        <div class="mb-3">
+            <input v-model="filtro" type="text" class="form-control" placeholder="Buscar por ID, nombre." />
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
@@ -51,39 +98,54 @@ async function eliminarUbicacion(ubicacion) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(ubicacion, index) in ubicaciones" :key="index">
-                        <td>{{ index + 1 }}</td>
+                    <tr v-for="(ubicacion, index) in ubicacionesPaginadas" :key="index">
+                        <td>{{ index + 1 + (paginaActual - 1) * porPagina }}</td>
                         <td>{{ ubicacion.id }}</td>
                         <td>{{ ubicacion.nombre }}</td>
-                        
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Acciones
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <router-link :to="`/ubication/${ubicacion.id}`" class="dropdown-item">Ver
-                                            Detalles</router-link>
-                                    </li>
-                                    <li>
-                                        <router-link :to="`/ubication/update/${ubicacion.id}`"
-                                            class="dropdown-item">Editar</router-link>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"
-                                            @click.prevent="eliminarUbicacion(ubicacion)">Eliminar</a>
-                                    </li>
-                                </ul>
-                            </div>
 
+                        <td class="text-center">
+                            <router-link :to="`/ubication/${ubicacion.id}`" class="btn btn-sm btn-outline-primary me-1"
+                                title="Ver detalles de Estado">
+                                <i class="bi bi-eye"></i>
+                            </router-link>
+
+                            <router-link :to="`/ubication/update/${ubicacion.id}`" class="btn btn-sm btn-outline-success me-1"
+                                title="Editar Estado">
+                                <i class="bi bi-pencil"></i>
+                            </router-link>
+
+                            <button class="btn btn-sm btn-outline-danger" title="Eliminar Estado"
+                                @click.prevent="eliminarEstado(ubicacion)">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </td>
+
+                    </tr>
+                    <tr v-if="ubicacionesPaginadas.length === 0">
+                        <td colspan="6" class="text-center">No se encontraron estados.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <!-- Paginación -->
+        <nav v-if="totalPaginas > 1">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" :class="{ disabled: paginaActual === 1 }">
+                    <button class="page-link" @click="paginaActual--" :disabled="paginaActual === 1">Anterior</button>
+                </li>
+                <li v-for="pagina in totalPaginas" :key="pagina" class="page-item"
+                    :class="{ active: pagina === paginaActual }">
+                    <button class="page-link" @click="paginaActual = pagina">{{ pagina }}</button>
+                </li>
+                <li class="page-item" :class="{ disabled: paginaActual === totalPaginas }">
+                    <button class="page-link" @click="paginaActual++"
+                        :disabled="paginaActual === totalPaginas">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
     </div>
+
 </template>
 
 
