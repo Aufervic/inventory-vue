@@ -4,18 +4,42 @@ import { useRouter } from 'vue-router'
 import { login } from '@/store/auth'
 
 const router = useRouter()
+
 const username = ref('')
 const password = ref('')
 const error = ref('')
 
-function handleLogin() {
-  // Simulación de login
-  if (username.value === 'admin' && password.value === '123456') {
-    //localStorage.setItem('auth', 'true')
-    login(username.value)
+
+async function handleLogin() {
+  error.value = ''
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000//api/token/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value
+      })
+    })
+
+    if (!res.ok) {
+      throw new Error('Credenciales inválidas')
+    }
+
+    const data = await res.json()
+    
+    login({
+      access: data.access,
+      refresh: data.refresh,
+      name: username.value
+    })
+
     router.push('/')
-  } else {
-    error.value = 'Credenciales incorrectas. Intenta nuevamente.'
+  } catch (err) {
+    error.value = err.message
   }
 }
 </script>
@@ -33,25 +57,11 @@ function handleLogin() {
       <form @submit.prevent="handleLogin">
         <div class="mb-3">
           <label for="username" class="form-label">Usuario</label>
-          <input
-            v-model="username"
-            type="text"
-            id="username"
-            class="form-control"
-            placeholder="Ej. admin"
-            required
-          />
+          <input v-model="username" type="text" id="username" class="form-control" placeholder="Ej. admin" required />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Contraseña</label>
-          <input
-            v-model="password"
-            type="password"
-            id="password"
-            class="form-control"
-            placeholder="••••••"
-            required
-          />
+          <input v-model="password" type="password" id="password" class="form-control" placeholder="••••••" required />
         </div>
 
         <div class="d-grid">
@@ -65,4 +75,3 @@ function handleLogin() {
     </div>
   </div>
 </template>
-

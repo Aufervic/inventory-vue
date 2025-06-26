@@ -93,6 +93,27 @@
                 </div>
             </li>
 
+            <!-- Tipos de Ingreso colapsable -->
+            <li class="mt-2">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#submenuTiposDeIngreso"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="submenuTiposDeIngreso">
+                    <span><i class="bi bi-box-arrow-in-down me-2"></i> Tipos de Ingreso</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse ps-3" id="submenuTiposDeIngreso">
+                    <router-link to="/incometype" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-list me-2"></i> Ver todos
+                    </router-link>
+                    <router-link to="/incometype/new" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
+                    </router-link>
+                </div>
+            </li>
+
         </ul>
     </aside>
 </template>

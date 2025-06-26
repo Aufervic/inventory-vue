@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-//import axios from 'axios'
+import api from '@/services/api'
 
 const form = reactive({
     id: '',
@@ -19,7 +19,7 @@ onMounted(() => {
 
 async function crearEstado() {
     try {
-        //const response = await axios.post('http://127.0.0.1:8000/api/estados/', form)
+        //const response = await api.post('estados/', form)
         enviado.value = true
         console.log('Estado creado con éxito:', undefined)
     } catch (error) {

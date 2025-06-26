@@ -1,10 +1,10 @@
 import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
 
-import ListEquipmentView from './../views/equipment/ListEquipmentView.vue'
-import UpdateEquipmentView from './../views/equipment/UpdateEquipmentView.vue'
-import CreateEquipmentView from './../views/equipment/CreateEquipmentView.vue'
-import DetailEquipmentView from './../views/equipment/DetailEquipmentView.vue'
-import DashBoardView from './../views/DashboardView.vue'
+import ListEquipmentView from '@/views/equipment/ListEquipmentView.vue'
+import UpdateEquipmentView from '@/views/equipment/UpdateEquipmentView.vue'
+import CreateEquipmentView from '@/views/equipment/CreateEquipmentView.vue'
+import DetailEquipmentView from '@/views/equipment/DetailEquipmentView.vue'
+import DashBoardView from '@/views/DashboardView.vue'
 import ListUbicationView from '@/views/ubication/ListUbicationView.vue'
 import CreateUbicationView from '@/views/ubication/CreateUbicationView.vue'
 import UpdateUbicationView from '@/views/ubication/UpdateUbicationView.vue'
@@ -18,6 +18,10 @@ import CreateMovementView from '@/views/movement/CreateMovementView.vue'
 import UpdateMovementView from '@/views/movement/UpdateMovementView.vue'
 import DetailMovementView from '@/views/movement/DetailMovementView.vue'
 import LoginView from '@/views/LoginView.vue'
+import ListIncomeTypeView from '@/views/incomeType/ListIncomeTypeView.vue'
+import CreateIncomeTypeView from '@/views/incomeType/CreateIncomeTypeView.vue'
+import UpdateIncomeTypeView from '@/views/incomeType/UpdateIncomeTypeView.vue'
+import DetailIncomeTypeView from '@/views/incomeType/DetailIncomeTypeView.vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { isAuth } from '@/store/auth'
@@ -45,6 +49,11 @@ const routes = [
       { path: '/movement/new', component: CreateMovementView },
       { path: '/movement/update/:id', component: UpdateMovementView, props: true },
       { path: '/movement/:id', component: DetailMovementView, props: true },
+
+      { path: '/incometype', component: ListIncomeTypeView },
+      { path: '/incometype/new', component: CreateIncomeTypeView },
+      { path: '/incometype/update/:id', component: UpdateIncomeTypeView, props: true },
+      { path: '/incometype/:id', component: DetailIncomeTypeView,  props: true},
     ]
   },
 

@@ -1,4 +1,5 @@
 <script setup>
+// lista los tipos de ingresos
 
 import { ref, onMounted, watch, computed } from 'vue'
 //import api from '@/services/api'
@@ -8,18 +9,17 @@ const filtro = ref('')
 const paginaActual = ref(1)
 const porPagina = 4
 
-const ubicaciones = ref([])
+const tiposDeIngreso = ref([])
 
 onMounted(() => {
-    ubicaciones.value = [
-        { id: 1, nombre: "Ubicación 1" },
-        { id: 2, nombre: "Ubicación 2" },
-        { id: 3, nombre: "Ubicación 3" },
-        { id: 4, nombre: "Ubicación 4" },
-        { id: 5, nombre: "Ubicación 5" },
-        { id: 6, nombre: "Ubicación 6" },
+    tiposDeIngreso.value = [
+        { id: 1, nombre: "Tipo de Ingreso 1" },
+        { id: 2, nombre: "Tipo de Ingreso 2" },
+        { id: 3, nombre: "Tipo de Ingreso 3" },
+        { id: 4, nombre: "Tipo de Ingreso 4" },
+        { id: 5, nombre: "Tipo de Ingreso 5" },
+        { id: 6, nombre: "Tipo de Ingreso 6" },
     ]
-
 })
 
 
@@ -29,40 +29,40 @@ watch(filtro, () => {
 })
 
 
-async function eliminarUbicacion(ubicacion) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar la Ubicación "${ubicacion.nombre}"?`)) {
+async function eliminarTipoIngreso(tipoIngreso) {
+    if (!confirm(`¿Estás seguro de que deseas eliminar el Tipo de Ingreso"${tipoIngreso.nombre}"?`)) {
         return;
     }
 
     try {
-        //await api.delete(`ubicaciones/${ubicacion.id}`);
-        ubicaciones.value = ubicaciones.value.filter(e => e.id !== ubicacion.id);
-        alert('Ubicación eliminada correctamente.');
+        //await api.delete(`ingresos/${tipoIngreso.id}`);
+        tiposDeIngreso.value = tiposDeIngreso.value.filter(e => e.id !== tipoIngreso.id);
+        alert('Tipo de Ingreso eliminado correctamente.');
     } catch (error) {
-        console.error('Error al eliminar la Ubicación:', error);
-        alert('Hubo un problema al eliminar la Ubicación');
+        console.error('Error al eliminar el Tipo de Ingreso:', error);
+        alert('Hubo un problema al eliminar el Tipo de Ingreso');
     }
 }
 
 
 
 // paginación
-const ubicacionesFiltradas = computed(() => {
+const tiposDeIngresoFiltrados = computed(() => {
     const f = filtro.value.toLowerCase()
-    return ubicaciones.value.filter(
-        (estd) =>
-            ("" + estd.id).toLowerCase().includes(f) ||
-            estd.nombre.toLowerCase().includes(f)
+    return tiposDeIngreso.value.filter(
+        (tingreso) =>
+            ("" + tingreso.id).toLowerCase().includes(f) ||
+            tingreso.nombre.toLowerCase().includes(f)
     )
 })
 
 const totalPaginas = computed(() =>
-    Math.ceil(ubicacionesFiltradas.value.length / porPagina)
+    Math.ceil(tiposDeIngresoFiltrados.value.length / porPagina)
 )
 
-const ubicacionesPaginadas = computed(() => {
+const tiposDeIngresoPaginados = computed(() => {
     const inicio = (paginaActual.value - 1) * porPagina
-    return ubicacionesFiltradas.value.slice(inicio, inicio + porPagina)
+    return tiposDeIngresoFiltrados.value.slice(inicio, inicio + porPagina)
 })
 
 </script>
@@ -71,13 +71,13 @@ const ubicacionesPaginadas = computed(() => {
 <template>
     <div class="container-fluid">
         <h1 class="mb-4">
-            <i class="bi bi-geo-alt me-2"></i> Ubicaciones
+            <i class="bi bi-box-arrow-in-down me-2"></i> Tipos de Ingreso
         </h1>
 
         <!-- Botón nuevo -->
         <div class="mb-3 text-end">
-            <router-link to="/ubication/new" class="btn btn-success">
-                <i class="bi bi-plus-circle me-1"></i> Nueva Ubicación
+            <router-link to="/incometype/new" class="btn btn-success">
+                <i class="bi bi-plus-circle me-1"></i> Nuevo Tipo de Ingreso
             </router-link>
         </div>
 
@@ -98,31 +98,31 @@ const ubicacionesPaginadas = computed(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(ubicacion, index) in ubicacionesPaginadas" :key="index">
+                    <tr v-for="(tipoIngreso, index) in tiposDeIngresoPaginados" :key="index">
                         <td>{{ index + 1 + (paginaActual - 1) * porPagina }}</td>
-                        <td>{{ ubicacion.id }}</td>
-                        <td>{{ ubicacion.nombre }}</td>
+                        <td>{{ tipoIngreso.id }}</td>
+                        <td>{{ tipoIngreso.nombre }}</td>
 
                         <td class="text-center">
-                            <router-link :to="`/ubication/${ubicacion.id}`" class="btn btn-sm btn-outline-primary me-1"
-                                title="Ver detalles de Ubicación">
+                            <router-link :to="`/incometype/${tipoIngreso.id}`" class="btn btn-sm btn-outline-primary me-1"
+                                title="Ver detalles de Tipo Ingreso">
                                 <i class="bi bi-eye"></i>
                             </router-link>
 
-                            <router-link :to="`/ubication/update/${ubicacion.id}`" class="btn btn-sm btn-outline-success me-1"
-                                title="Editar Ubicación">
+                            <router-link :to="`/incometype/update/${tipoIngreso.id}`" class="btn btn-sm btn-outline-success me-1"
+                                title="Editar Tipo de Ingreso">
                                 <i class="bi bi-pencil"></i>
                             </router-link>
 
-                            <button class="btn btn-sm btn-outline-danger" title="Eliminar Ubicación"
-                                @click.prevent="eliminarUbicacion(ubicacion)">
+                            <button class="btn btn-sm btn-outline-danger" title="Eliminar Tipo Ingreso"
+                                @click.prevent="eliminarTipoIngreso(tipoIngreso)">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
 
                     </tr>
-                    <tr v-if="ubicacionesPaginadas.length === 0">
-                        <td colspan="6" class="text-center">No se encontraron ubicaciones.</td>
+                    <tr v-if="tiposDeIngresoPaginados.length === 0">
+                        <td colspan="6" class="text-center">No se encontraron tipos de ingreso.</td>
                     </tr>
                 </tbody>
             </table>

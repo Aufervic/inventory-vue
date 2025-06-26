@@ -1,5 +1,5 @@
 <script setup>
-import { isAuth, logout, username } from '@/store/auth'
+import { logout, username } from '@/store/auth'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/services/api'
 
 const props = defineProps(['id'])
 
@@ -34,10 +34,10 @@ onMounted(async () => {
     try {
         loading.value = true
         const [equipoResponse, tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
-            axios.get(`http://127.0.0.1:8000/api/equipos/${props.id}`),
-            axios.get('http://127.0.0.1:8000/api/tipoingreso/'),
-            axios.get('http://127.0.0.1:8000/api/estados/'),
-            axios.get('http://127.0.0.1:8000/api/ubicaciones/'),
+            api.get(`equipos/${props.id}`),
+            api.get('tipoingreso/'),
+            api.get('estados/'),
+            api.get('ubicaciones/'),
         ]);
 
         Object.assign(form, equipoResponse.data);
@@ -60,7 +60,7 @@ onMounted(async () => {
 // Función al enviar el formulario
 async function actualizarEquipo() {
     try {
-        const response = await axios.put(`http://127.0.0.1:8000/api/equipos/${props.id}`, form)
+        const response = await api.put(`equipos/${props.id}`, form)
         enviado.value = true
         console.log('Equipo actualizado con éxito:', response.data)
     } catch (error) {

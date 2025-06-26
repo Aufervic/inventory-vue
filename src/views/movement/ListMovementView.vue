@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-//import axios from 'axios'
+//import api from '@/services/api'
 
 const filtro = ref('')
 const paginaActual = ref(1)
@@ -33,7 +33,7 @@ async function eliminarMovimiento(movimiento) {
   }
 
   try {
-    //await axios.delete(`http://127.0.0.1:8000/api/movimientos/${movimiento.id}`);
+    //await api.delete(`movimientos/${movimiento.id}`);
     movimientos.value = movimientos.value.filter(e => e.id !== movimiento.id);
     alert('Movimiento eliminado correctamente');
   } catch (error) {

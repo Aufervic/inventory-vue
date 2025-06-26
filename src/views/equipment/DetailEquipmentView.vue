@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import api from '@/services/api'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
@@ -8,8 +8,8 @@ const equipment = ref({})
 
 
 onMounted(() => {
-    axios
-        .get(`http://127.0.0.1:8000/api/equipos/${props.id}`)
+    api
+        .get(`equipos/${props.id}`)
         .then(response => (equipment.value = response.data))
         .catch(error => console.log(error))
 })

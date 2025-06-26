@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import axios from 'axios'
+//import api from '@/services/api'
 
 const props = defineProps(['id'])
 
@@ -21,7 +21,7 @@ onMounted(async () => {
 // Función al enviar el formulario
 async function actualizarUbicacion() {
     try {
-        //const response = await axios.put(`http://127.0.0.1:8000/api/estados/${props.id}`, form)
+        //const response = await api.put(`estados/${props.id}`, form)
         enviado.value = true
         console.log('Estado actualizado con éxito:', undefined)
     } catch (error) {

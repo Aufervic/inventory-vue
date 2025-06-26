@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import api from '@/services/api'
 
 const equipos = ref([])
 
@@ -11,8 +11,8 @@ const porPagina = 3
 
 
 onMounted(() => {
-  axios
-    .get('http://127.0.0.1:8000/api/equipos/')
+  api
+    .get('equipos/')
     .then(response => (equipos.value = response.data))
     .catch(error => console.log(error))
 })
@@ -24,7 +24,7 @@ async function eliminarEquipo(equipment) {
   }
 
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/equipos/${equipment.id}`);
+    await api.delete(`equipos/${equipment.id}`);
     equipos.value = equipos.value.filter(e => e.id !== equipment.id);
     alert('Equipo eliminado correctamente');
   } catch (error) {

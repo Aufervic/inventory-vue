@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onMounted, computed, watch } from 'vue'
-//import axios from 'axios'
+//import api from '@/services/api'
 
 // Paginación
 const filtro = ref('')
@@ -31,7 +31,7 @@ async function eliminarEstado(estado) {
     }
 
     try {
-        //await axios.delete(`http://127.0.0.1:8000/api/estados/${estado.id}`);
+        //await api.delete(`estados/${estado.id}`);
         estados.value = estados.value.filter(e => e.id !== estado.id);
         alert('Estado eliminado correctamente.');
     } catch (error) {

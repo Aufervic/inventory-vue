@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/services/api'
 
 const form = reactive({
     id: '',
@@ -33,9 +33,9 @@ onMounted(async () => {
     try {
         loading.value = true
         const [tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
-            axios.get('http://127.0.0.1:8000/api/tipoingreso/'),
-            axios.get('http://127.0.0.1:8000/api/estados/'),
-            axios.get('http://127.0.0.1:8000/api/ubicaciones/'),
+            api.get('tipoingreso/'),
+            api.get('estados/'),
+            api.get('ubicaciones/'),
         ])
 
 
@@ -54,7 +54,7 @@ onMounted(async () => {
 
 async function crearEquipo() {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/equipos/', form)
+        const response = await api.post('equipos/', form)
         enviado.value = true
         console.log('Equipo creado con éxito:', response.data)
     } catch (error) {

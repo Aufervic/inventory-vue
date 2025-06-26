@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-//import axios from 'axios'
+//import api from '@/services/api'
 
 const props = defineProps(['id'])
 
@@ -24,9 +24,9 @@ onMounted(async () => {
     try {
         loading.value = true
         /*const [movimientoResponse, equiposResponse, ubicacionesResponse] = await Promise.all([
-            axios.get(`http://127.0.0.1:8000/api/movimientos/${props.id}`),
-            axios.get('http://127.0.0.1:8000/api/equipos/'),
-            axios.get('http://127.0.0.1:8000/api/ubicaciones/'),
+            api.get(`movimientos/${props.id}`),
+            api.get('equipos/'),
+            api.get('ubicaciones/'),
         ]);*/
 
         //Object.assign(form, equipoResponse.data);
@@ -60,7 +60,7 @@ onMounted(async () => {
 // Función al enviar el formulario
 async function actualizarMovimiento() {
     try {
-        //const response = await axios.put(`http://127.0.0.1:8000/api/movimiento/${props.id}`, form)
+        //const response = await api.put(`movimiento/${props.id}`, form)
         enviado.value = true
         console.log('Movimiento actualizado con éxito:', undefined)
     } catch (error) {

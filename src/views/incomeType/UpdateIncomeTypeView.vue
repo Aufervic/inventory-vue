@@ -15,11 +15,12 @@ const loading = ref(true)
 
 
 onMounted(async () => {
+    form.value = {id: props.id, nombre: "Un nombre de Tipo de Ingreso"}
     loading.value = true
 })
 
 // Función al enviar el formulario
-async function actualizarUbicacion() {
+async function actualizarTipoIngreso() {
     try {
         //const response = await api.put(`ubicaciones/${props.id}`, form)
         enviado.value = true
@@ -33,12 +34,12 @@ async function actualizarUbicacion() {
 
 <template>
     <div class="container mt-4">
-        <h2>Actualizar Ubicación</h2>
+        <h2>Actualizar Tipo de Ingreso</h2>
 
-        <form @submit.prevent="actualizarUbicacion">
+        <form @submit.prevent="actualizarTipoIngreso">
             <div class="mb-3">
-                <label for="unombre" class="form-label fw-bold">Nombre</label>
-                <input type="text" id="unombre" class="form-control" v-model="form.nombre"
+                <label for="tinombre" class="form-label fw-bold">Nombre</label>
+                <input type="text" id="tinombre" class="form-control" v-model="form.nombre"
                     required />
             </div>
             <!-- Botón de envío -->

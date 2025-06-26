@@ -1,4 +1,5 @@
 <script setup>
+// Crear Nuevo Tipo de Ingreso
 import { reactive, ref, onMounted } from 'vue'
 //import api from '@/services/api'
 
@@ -17,13 +18,13 @@ onMounted(() => {
 })
 
 
-async function crearUbicacion() {
+async function crearTipoIngreso() {
     try {
-        //const response = await api.post('ubicaciones/', form)
+        //const response = await api.post('tipoingresos/', form)
         enviado.value = true
-        console.log('Ubicación creada con éxito:', undefined)
+        console.log('Tipo de Ingreso creado con éxito:', undefined)
     } catch (error) {
-        console.error('Error al crear Ubicación:', error)
+        console.error('Error al crear Tipo de Ingreso:', error)
     }
 }
 
@@ -31,13 +32,13 @@ async function crearUbicacion() {
 
 <template>
     <div class="container mt-4">
-        <h2>Crear Ubicación</h2>
+        <h2>Crear Tipo de Ingreso</h2>
         <div v-if="loading">Cargando datos</div>
         <div v-else>
-            <form @submit.prevent="crearUbicacion">
+            <form @submit.prevent="crearTipoIngreso">
                 <div class="mb-3">
-                    <label for="unombre" class="form-label fw-bold">Nombre</label>
-                    <input type="text" id="unombre" class="form-control" v-model="form.nombre"
+                    <label for="tinombre" class="form-label fw-bold">Nombre</label>
+                    <input type="text" id="tinombre" class="form-control" v-model="form.nombre"
                         required />
                 </div>
  
