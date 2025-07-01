@@ -70,7 +70,7 @@
                         <td>{{ revision.estado_encontrado }}</td>
                         <td>{{ revision.encontrado ? 'ENCONTRADO' : 'DESAPARECIDO' }}</td>
                         <td>{{ revision.correccion_datos ? 'SI' : 'NO' }}</td>
-                        <td>{{ revision.observaciones.substring(0, 10) + '...' }}</td>
+                        <td>{{ revision.observaciones.length > 10 ? revision.observaciones.substring(0, 10) + '...': revision.observaciones}}</td>
                         <td>{{ revision.fecha_revision }}</td>
 
                         <td class="text-center">
