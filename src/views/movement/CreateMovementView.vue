@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import api from '@/services/api'
+//import api from '@/services/api'
 
 const form = reactive({
     id: '',

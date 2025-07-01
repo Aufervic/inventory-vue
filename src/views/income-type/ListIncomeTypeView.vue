@@ -76,7 +76,7 @@ const tiposDeIngresoPaginados = computed(() => {
 
         <!-- Botón nuevo -->
         <div class="mb-3 text-end">
-            <router-link to="/incometype/new" class="btn btn-success">
+            <router-link to="/income-type/new" class="btn btn-success">
                 <i class="bi bi-plus-circle me-1"></i> Nuevo Tipo de Ingreso
             </router-link>
         </div>
@@ -104,12 +104,12 @@ const tiposDeIngresoPaginados = computed(() => {
                         <td>{{ tipoIngreso.nombre }}</td>
 
                         <td class="text-center">
-                            <router-link :to="`/incometype/${tipoIngreso.id}`" class="btn btn-sm btn-outline-primary me-1"
+                            <router-link :to="`/income-type/${tipoIngreso.id}`" class="btn btn-sm btn-outline-primary me-1"
                                 title="Ver detalles de Tipo Ingreso">
                                 <i class="bi bi-eye"></i>
                             </router-link>
 
-                            <router-link :to="`/incometype/update/${tipoIngreso.id}`" class="btn btn-sm btn-outline-success me-1"
+                            <router-link :to="`/income-type/update/${tipoIngreso.id}`" class="btn btn-sm btn-outline-success me-1"
                                 title="Editar Tipo de Ingreso">
                                 <i class="bi bi-pencil"></i>
                             </router-link>

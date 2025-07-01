@@ -42,7 +42,7 @@ onMounted(() => {
         </div>
 
         <div v-else class="alert alert-warning">
-            Equipo no encontrado.
+            Movimiento no encontrado.
         </div>
     </div>
 

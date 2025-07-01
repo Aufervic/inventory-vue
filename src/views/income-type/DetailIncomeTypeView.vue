@@ -29,7 +29,7 @@ onMounted(() => {
                             <li class="list-group-item"><strong>ID:</strong> {{ tipoDeIngreso.id }}</li>
                             <li class="list-group-item"><strong>Nombre:</strong> {{ tipoDeIngreso.nombre }}</li>
                         </ul>
-                        <router-link to="/incometype" class="btn btn-outline-primary btn-sm">← Volver</router-link>
+                        <router-link to="/income-type" class="btn btn-outline-primary btn-sm">← Volver</router-link>
                     </div>
                 </div>
             </div>

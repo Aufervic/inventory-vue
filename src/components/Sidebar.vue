@@ -97,18 +97,62 @@
             <li class="mt-2">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse"
-                    href="#submenuTiposDeIngreso"
+                    href="#submenuTipoIngreso"
                     role="button"
                     aria-expanded="false"
-                    aria-controls="submenuTiposDeIngreso">
+                    aria-controls="submenuTipoIngreso">
                     <span><i class="bi bi-box-arrow-in-down me-2"></i> Tipos de Ingreso</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
-                <div class="collapse ps-3" id="submenuTiposDeIngreso">
-                    <router-link to="/incometype" class="nav-link text-white" active-class="active">
+                <div class="collapse ps-3" id="submenuTipoIngreso">
+                    <router-link to="/income-type" class="nav-link text-white" active-class="active">
                         <i class="bi bi-list me-2"></i> Ver todos
                     </router-link>
-                    <router-link to="/incometype/new" class="nav-link text-white" active-class="active">
+                    <router-link to="/income-type/new" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
+                    </router-link>
+                </div>
+            </li>
+
+
+            <!-- Inventario colapsable -->
+            <li class="mt-2">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#submenuInventario"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="submenuInventario">
+                    <span><i class="bi bi-clipboard-data me-2"></i> Inventarios</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse ps-3" id="submenuInventario">
+                    <router-link to="/inventory" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-list-ul me-2"></i> Ver todos
+                    </router-link>
+                    <router-link to="/inventory/new" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
+                    </router-link>
+                </div>
+            </li>
+
+
+            <!-- REvision Inventario colapsable -->
+            <li class="mt-2">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#submenuRevisionInventario"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="submenuRevisionInventario">
+                    <span><i class="bi bi-check-circle me-2"></i> Revision de Inventario</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse ps-3" id="submenuRevisionInventario">
+                    <router-link to="/inventory-review" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-list-ul me-2"></i> Ver todos
+                    </router-link>
+                    <router-link to="/inventory-review/new" class="nav-link text-white" active-class="active">
                         <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
                     </router-link>
                 </div>
