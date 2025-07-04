@@ -68,7 +68,7 @@ const routes = [
       { path: '/inventory/new', component: CreateInventoryView },
       { path: '/inventory/update/:id', component: UpdateInventoryView, props: true },
       { path: '/inventory/:id', component: DetailInventoryView,  props: true},
-      { path: '/inventory/:id/revision', component: InventoryRevisionView, props: true},
+      { path: '/inventory/:id/revision', component: InventoryRevisionView},
       
       { path: '/inventory-review', component: ListInventoryReviewView },
       { path: '/inventory-review/new', component: CreateInventoryReviewView },

@@ -37,7 +37,7 @@
         </div>
 
 
-        <div v-if="mensajes.texto" :class="['alert', 'alert-'+mensajes.tipo]">{{ mensajes.texto }}</div>
+        <div v-if="mensajes.texto" :class="['alert', 'alert-' + mensajes.tipo]">{{ mensajes.texto }}</div>
 
 
         <h5 class="mt-4">Equipos registrados:</h5>
@@ -70,7 +70,8 @@
                         <td>{{ revision.estado_encontrado }}</td>
                         <td>{{ revision.encontrado ? 'ENCONTRADO' : 'DESAPARECIDO' }}</td>
                         <td>{{ revision.correccion_datos ? 'SI' : 'NO' }}</td>
-                        <td>{{ revision.observaciones.length > 10 ? revision.observaciones.substring(0, 10) + '...': revision.observaciones}}</td>
+                        <td>{{ revision.observaciones.length > 10 ? revision.observaciones.substring(0, 10) + '...' :
+                            revision.observaciones }}</td>
                         <td>{{ revision.fecha_revision }}</td>
 
                         <td class="text-center">
@@ -98,12 +99,17 @@
             </table>
         </div>
     </div>
+    <ToastAlert :texto="mensajeToast.texto" :tipo="mensajeToast.tipo" :keyRefresh="mensajeToast.key"/>
 </template>
 
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import ToastAlert from '@/components/ui/ToastAlert.vue'
+
+
+
 
 const route = useRoute()
 const inventarioId = route.params.id
@@ -115,6 +121,12 @@ const codigo = ref('')
 const mensajes = ref({
     tipo: '',// 'success', 'danger', 'info'.
     texto: ''
+})
+// para el Toast
+const mensajeToast = ref({
+    tipo: 'danger', // 'success', 'danger', 'info'.
+    texto:'',
+    key: 0,
 })
 
 const form = reactive({
@@ -128,6 +140,12 @@ const form = reactive({
     fecha_revision: ""
 })
 
+function mostrarToast(texto, tipo='danger'){
+    mensajeToast.value.texto = texto
+    mensajeToast.value.tipo = tipo
+    mensajeToast.value.key++
+}
+
 // Carga inventario y sus revisiones
 async function registrarEquipo() {
     if (!codigo.value) return
@@ -137,6 +155,14 @@ async function registrarEquipo() {
         mensajes.value.tipo = 'danger';
         mensajes.value.texto = 'Debe seleccionar una ubicación y estado antes de registrar el equipo.';
         return;
+    }
+
+    // valida si ya existe el codigo de barras
+    if (revisiones.value.some(rev => rev.equipo_id === codigo.value)) {// ojo
+        mensajes.value.tipo = 'danger';
+        mensajes.value.texto = 'Este código ya fue ingresado';
+        mostrarToast('Este código ya fue ingresado.')
+        return
     }
 
     try {
@@ -154,7 +180,7 @@ async function registrarEquipo() {
         revisiones.value.unshift({
             id: tempID,
             inventario_id: inventarioId,
-            equipo_id: inventarioId,
+            equipo_id: codigo.value,
             ubicacion_ercontrada: form.ubicacion_ercontrada,
             estado_encontrado: form.estado_encontrado,
             encontrado: true,
