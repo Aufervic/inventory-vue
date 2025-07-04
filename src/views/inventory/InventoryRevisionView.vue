@@ -41,6 +41,14 @@
 
 
         <h5 class="mt-4">Equipos registrados:</h5>
+        <div class="d-flex justify-content-end mb-2">
+            <button class="btn btn-outline-success me-2" @click="exportarAExcel(revisiones)">
+                <i class="bi bi-file-earmark-excel"></i> Excel
+            </button>
+            <button class="btn btn-outline-danger" @click="exportarAPDF(revisiones)">
+                <i class="bi bi-file-earmark-pdf"></i> PDF
+            </button>
+        </div>
         <!-- Tabla -->
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover align-middle">
@@ -99,7 +107,7 @@
             </table>
         </div>
     </div>
-    <ToastAlert :texto="mensajeToast.texto" :tipo="mensajeToast.tipo" :keyRefresh="mensajeToast.key"/>
+    <ToastAlert :texto="mensajeToast.texto" :tipo="mensajeToast.tipo" :keyRefresh="mensajeToast.key" />
 </template>
 
 
@@ -107,8 +115,9 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ToastAlert from '@/components/ui/ToastAlert.vue'
-
-
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 
 const route = useRoute()
@@ -125,7 +134,7 @@ const mensajes = ref({
 // para el Toast
 const mensajeToast = ref({
     tipo: 'danger', // 'success', 'danger', 'info'.
-    texto:'',
+    texto: '',
     key: 0,
 })
 
@@ -140,7 +149,7 @@ const form = reactive({
     fecha_revision: ""
 })
 
-function mostrarToast(texto, tipo='danger'){
+function mostrarToast(texto, tipo = 'danger') {
     mensajeToast.value.texto = texto
     mensajeToast.value.tipo = tipo
     mensajeToast.value.key++
@@ -259,6 +268,24 @@ onMounted(async () => {
         { id: 6, nombre: "Ubicación 6" },
     ]
 })
+
+
+function exportarAExcel(data, nombreArchivo = 'reporte_inventario') {
+    const worksheet = XLSX.utils.json_to_sheet(data)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Inventario')
+    XLSX.writeFile(workbook, `${nombreArchivo}.xlsx`)
+}
+
+function exportarAPDF(data, nombreArchivo = 'reporte_inventario'){
+    const doc = new jsPDF()
+    autoTable(doc, {
+        head: [['ID', 'Equipo', 'Ubicación', 'Estado', 'aufer']],
+        body: data.map(r => [r.id, r.equipo_id, r.ubicacion_ercontrada, r.estado_encontrado])
+    })
+    doc.save(`${nombreArchivo}.pdf`)
+}
+
 </script>
 
 

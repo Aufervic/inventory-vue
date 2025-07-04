@@ -128,7 +128,7 @@
                 </a>
                 <div class="collapse ps-3" id="submenuInventario">
                     <router-link to="/inventory" class="nav-link text-white" active-class="active">
-                        <i class="bi bi-list-ul me-2"></i> Ver todos
+                        <i class="bi bi-list-ul me-2"></i> Lista de inventarios
                     </router-link>
                     <router-link to="/inventory/new" class="nav-link text-white" active-class="active">
                         <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
