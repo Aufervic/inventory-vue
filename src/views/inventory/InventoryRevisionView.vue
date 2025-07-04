@@ -37,7 +37,7 @@
         </div>
 
 
-        <div v-if="mensajes" class="alert alert-info">{{ mensajes }}</div>
+        <div v-if="mensajes.texto" :class="['alert', 'alert-'+mensajes.tipo]">{{ mensajes.texto }}</div>
 
 
         <h5 class="mt-4">Equipos registrados:</h5>
@@ -112,7 +112,10 @@ const inventario = ref({})
 const revisiones = ref([])
 const ubicaciones = ref([])
 const codigo = ref('')
-const mensajes = ref('')
+const mensajes = ref({
+    tipo: '',// 'success', 'danger', 'info'.
+    texto: ''
+})
 
 const form = reactive({
     inventario_id: "",// FK
@@ -128,6 +131,13 @@ const form = reactive({
 // Carga inventario y sus revisiones
 async function registrarEquipo() {
     if (!codigo.value) return
+
+    // Validación: que ubicación y estado estén seleccionados
+    if (!form.ubicacion_ercontrada || !form.estado_encontrado) {
+        mensajes.value.tipo = 'danger';
+        mensajes.value.texto = 'Debe seleccionar una ubicación y estado antes de registrar el equipo.';
+        return;
+    }
 
     try {
         /*const res = await axios.post('/api/revision_inventarios/', {
@@ -152,10 +162,12 @@ async function registrarEquipo() {
             observaciones: form.observaciones,
             fecha_revision: fechaFormateada,
         })
-        mensajes.value = 'Equipo registrado correctamente'
+        mensajes.value.tipo = "success"
+        mensajes.value.texto = 'Equipo registrado correctamente'
         codigo.value = ''
     } catch (error) {
-        mensajes.value = 'Error al registrar equipo: ' + error.response?.data?.detail || 'Desconocido'
+        mensajes.value.tipo = 'danger'
+        mensajes.value.texto = 'Error al registrar equipo: ' + error.response?.data?.detail || 'Desconocido'
     }
 }
 

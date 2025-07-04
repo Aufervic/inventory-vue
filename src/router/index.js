@@ -33,7 +33,7 @@ import UpdateInventoryReviewView from '@/views/inventory-review/UpdateInventoryR
 import InventoryRevisionView from '@/views/inventory/InventoryRevisionView.vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { isAuth } from '@/store/auth'
+import { isAuth, logout, getAccessToken, isTokenExpired } from '@/store/auth'
 
 const routes = [
   {
@@ -90,9 +90,13 @@ const router = createRouter({
 
 // guardia global que protege las rutas
 router.beforeEach((to, from, next) => {
-  //const isAuth = localStorage.getItem('auth') === 'true'
   const publicPages = ['/login']
   const authRequired = !publicPages.includes(to.path)
+
+  const token = getAccessToken()
+  if(token && isTokenExpired(token)){
+    logout()
+  }
 
   if (authRequired && !isAuth.value) {
     next('/login')
