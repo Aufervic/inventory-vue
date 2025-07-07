@@ -101,9 +101,9 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path)
 
   const token = getAccessToken()
-  if(token && isTokenExpired(token)){
+  /*if(token && isTokenExpired(token)){
     logout()
-  }
+  }*/
 
   if (authRequired && !isAuth.value) {
     next('/login')

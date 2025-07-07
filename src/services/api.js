@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAccessToken, getRefreshToken, logout } from '@/store/auth'
+import { getAccessToken, getRefreshToken, login, logout } from '@/store/auth'
 
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/',
@@ -23,9 +23,20 @@ api.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config
+        const status = error.response?.status
+        const data = error.response?.data
 
-        // si no es error 401 o ya se reintentó, lanza error
-        if (error.response?.status !== 401 || originalRequest._retry) {
+        // Evitar múltiples reintentos
+        if (originalRequest._retry) {
+            return Promise.reject(error)
+        }
+
+        // Verifica si es error 401 o error 403 por token inválido
+        const isAuthError = (
+            status === 401 ||
+            (status === 403 && data?.code === "token_not_valid")
+        )
+        if (!isAuthError) {
             return Promise.reject(error)
         }
 
@@ -35,7 +46,7 @@ api.interceptors.response.use(
         // Intentar refresh
         const refresh = getRefreshToken()
 
-        if(!refresh){
+        if (!refresh) {
             logout()
             return Promise.reject(error)
         }
@@ -46,13 +57,20 @@ api.interceptors.response.use(
             })
 
             const newAccess = response.data.access
+            const newRefresh = response.data.refresh  // <-- Nuevo refresh
+
+            login({
+                access: newAccess,
+                refresh: newRefresh,
+                name: localStorage.getItem('username') || '',
+            })
 
             //actualizar cabecera y reintentar solicitud
             originalRequest.headers.Authorization = `Bearer ${newAccess}`
 
             return api(originalRequest)
 
-        }catch(refreshError){
+        } catch (refreshError) {
             logout()
             return Promise.reject(refreshError)
         }
