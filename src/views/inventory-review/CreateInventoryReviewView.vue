@@ -29,7 +29,7 @@ onMounted(async () => {
     try {
         loading.value = true
         /*const [tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
-            api.get('tipoingreso/'),
+            api.get('tipo-ingresos/'),
             api.get('estados/'),
             api.get('ubicaciones/'),
         ])*/

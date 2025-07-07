@@ -33,7 +33,7 @@ onMounted(async () => {
     try {
         loading.value = true
         const [tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
-            api.get('tipoingreso/'),
+            api.get('tipo-ingresos/'),
             api.get('estados/'),
             api.get('ubicaciones/'),
         ])
@@ -146,7 +146,6 @@ async function crearEquipo() {
                     <label for="ubicacion" class="form-label fw-bold">Ubicación</label>
                     <select id="ubicacion" class="form-select" v-model="form.ubicacion" required>
                         <option value="">Selecciona una Ubicación</option>
-                        <option value="100">Algo</option>
                         <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">{{
                             ubicacion.nombre }}</option>
 

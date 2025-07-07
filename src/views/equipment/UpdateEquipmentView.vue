@@ -35,7 +35,7 @@ onMounted(async () => {
         loading.value = true
         const [equipoResponse, tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
             api.get(`equipos/${props.id}`),
-            api.get('tipoingreso/'),
+            api.get('tipo-ingresos/'),
             api.get('estados/'),
             api.get('ubicaciones/'),
         ]);
