@@ -29,11 +29,21 @@
         </router-link>
       </div>
     </div>
+    <div class="mb-4 d-flex justify-content-center">
+      <div style="max-width: 400px; width: 100%;">
+        <Pie :data="data" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { Pie } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title, Tooltip, Legend,
+  ArcElement,
+} from 'chart.js'
 
 const username = 'Aufer'
 
@@ -43,6 +53,19 @@ const resumen = [
   { label: 'Oficinas', valor: 14, icon: 'bi-building', color: 'bg-secondary' },
   { label: 'Desaparecidos', valor: 13, icon: 'bi-exclamation-triangle', color: 'bg-danger' },
 ]
+
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement)
+
+const data = {
+  labels: ['Bueno', 'Regular', 'Malogrado'],
+  datasets: [{
+    label: 'Estado de Equipos',
+    data: [50, 20, 5],
+    backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+  }]
+}
+
 </script>
 
 <style scoped>
