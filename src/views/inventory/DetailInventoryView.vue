@@ -38,6 +38,11 @@ onMounted(() => {
                             <li class="list-group-item"><strong>Descripción:</strong> {{ inventario.descripcion }}</li>
                         </ul>
                         <router-link to="/movement" class="btn btn-outline-primary btn-sm">← Volver</router-link>
+
+                        <router-link :to="`/inventory/${inventario.id}/revision`" class="btn btn-success btn-sm ms-2">
+                            <i class="bi bi-clipboard-check me-1"></i>
+                            Iniciar revisión
+                        </router-link>
                     </div>
                 </div>
             </div>

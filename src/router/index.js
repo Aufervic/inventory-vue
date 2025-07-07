@@ -31,6 +31,10 @@ import CreateInventoryReviewView from '@/views/inventory-review/CreateInventoryR
 import DetailInventoryReviewView from '@/views/inventory-review/DetailInventoryReviewView.vue'
 import UpdateInventoryReviewView from '@/views/inventory-review/UpdateInventoryReviewView.vue'
 import InventoryRevisionView from '@/views/inventory/InventoryRevisionView.vue'
+import ListResponsibleView from '@/views/responsible/ListResponsibleView.vue'
+import CreateResponsibleView from '@/views/responsible/CreateResponsibleView.vue'
+import DetailResponsibleView from '@/views/responsible/DetailResponsibleView.vue'
+import UpdateResponsibleView from '@/views/responsible/UpdateResponsibleView.vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { isAuth, logout, getAccessToken, isTokenExpired } from '@/store/auth'
@@ -74,12 +78,15 @@ const routes = [
       { path: '/inventory-review/new', component: CreateInventoryReviewView },
       { path: '/inventory-review/update/:id', component: UpdateInventoryReviewView, props: true },
       { path: '/inventory-review/:id', component: DetailInventoryReviewView,  props: true},
+
+      { path: '/responsible', component: ListResponsibleView },
+      { path: '/responsible/new', component: CreateResponsibleView},
+      { path: '/responsible/update/:id', component: UpdateResponsibleView, props: true},
+      { path: '/responsible/:id', component: DetailResponsibleView, props: true },
     ]
   },
 
   { path:'/login', component: LoginView}
-
-
 
 ]
 

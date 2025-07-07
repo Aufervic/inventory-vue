@@ -137,7 +137,7 @@
             </li>
 
 
-            <!-- REvision Inventario colapsable -->
+            <!-- Revision Inventario colapsable -->
             <li class="mt-2">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse"
@@ -145,7 +145,7 @@
                     role="button"
                     aria-expanded="false"
                     aria-controls="submenuRevisionInventario">
-                    <span><i class="bi bi-check-circle me-2"></i> Revision de Inventario</span>
+                    <span><i class="bi bi-check-circle me-2"></i> Revision de Inv.</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse ps-3" id="submenuRevisionInventario">
@@ -153,6 +153,27 @@
                         <i class="bi bi-list-ul me-2"></i> Ver todos
                     </router-link>
                     <router-link to="/inventory-review/new" class="nav-link text-white" active-class="active">
+                        <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
+                    </router-link>
+                </div>
+            </li>
+
+            <!-- Responsable colapsable -->
+            <li class="mt-2">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#submenuResponsables"
+                    role="butrton"
+                    aria-expanded="false"
+                    aria-controls="submenuResponsables">
+                    <span><i class="bi bi-person-vcard me-2"></i> Responsables</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse ps-3" id="submenuResponsables">
+                    <router-link to="/responsible" class="nav-link text-white" active-class="active">
+                        <i class="vbi bi-list me-2"></i> Ver todos
+                    </router-link>
+                    <router-link to="/responsible/new" class="nav-link text-white" active-class="active">
                         <i class="bi bi-plus-circle me-2"></i> Añadir nuevo
                     </router-link>
                 </div>

@@ -38,14 +38,13 @@
 </template>
 
 <script setup>
+import { username } from '@/store/auth'
 import { Pie } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   Title, Tooltip, Legend,
   ArcElement,
 } from 'chart.js'
-
-const username = 'Aufer'
 
 const resumen = [
   { label: 'Inventarios', valor: 12, icon: 'bi-clipboard', color: 'bg-primary' },
