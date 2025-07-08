@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onMounted, watch, computed } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 // Paginación
 const filtro = ref('')
@@ -10,16 +10,13 @@ const porPagina = 4
 
 const ubicaciones = ref([])
 
-onMounted(() => {
-    ubicaciones.value = [
-        { id: 1, nombre: "Ubicación 1" },
-        { id: 2, nombre: "Ubicación 2" },
-        { id: 3, nombre: "Ubicación 3" },
-        { id: 4, nombre: "Ubicación 4" },
-        { id: 5, nombre: "Ubicación 5" },
-        { id: 6, nombre: "Ubicación 6" },
-    ]
-
+onMounted(async () => {
+    try {
+        const response = await api.get('ubicaciones/')
+        ubicaciones.value = response.data
+    } catch(error){
+        console.error(error)
+    }
 })
 
 
@@ -35,7 +32,7 @@ async function eliminarUbicacion(ubicacion) {
     }
 
     try {
-        //await api.delete(`ubicaciones/${ubicacion.id}`);
+        await api.delete(`ubicaciones/${ubicacion.id}/`);
         ubicaciones.value = ubicaciones.value.filter(e => e.id !== ubicacion.id);
         alert('Ubicación eliminada correctamente.');
     } catch (error) {

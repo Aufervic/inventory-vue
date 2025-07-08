@@ -5,13 +5,44 @@
 
     <!-- Tarjetas resumen -->
     <div class="row mb-4">
-      <div class="col-md-3" v-for="card in resumen" :key="card.label">
-        <div class="card text-white" :class="card.color">
+      <div class="col-md-3" key="inventarios">
+        <div class="card text-white bg-primary">
           <div class="card-body">
             <h5 class="card-title">
-              <i :class="['bi', card.icon, 'me-2']"></i> {{ card.label }}
+              <i class="bi bi-clipboard me-2"></i> Inventarios
             </h5>
-            <p class="card-text fs-4">{{ card.valor }}</p>
+            <p class="card-text fs-4">{{ dashboard.total_inventarios }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3" key="equipos">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-pc me-2"></i> Equipos
+            </h5>
+            <p class="card-text fs-4">{{ dashboard.total_equipos }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" key="oficinas">
+        <div class="card text-white bg-secondary">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-building me-2"></i> Oficinas
+            </h5>
+            <p class="card-text fs-4">{{ dashboard.total_oficinas }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" key="malogrados">
+        <div class="card text-white bg-danger">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-exclamation-triangle me-2"></i> Malogrados
+            </h5>
+            <p class="card-text fs-4">{{ dashboard.equipos_malogrados }}</p>
           </div>
         </div>
       </div>
@@ -31,13 +62,15 @@
     </div>
     <div class="mb-4 d-flex justify-content-center">
       <div style="max-width: 400px; width: 100%;">
-        <Pie :data="data" />
+        <Pie :data="charData" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { reactive, onMounted, computed } from 'vue'
+import api from '@/services/api'
 import { username } from '@/store/auth'
 import { Pie } from 'vue-chartjs'
 import {
@@ -46,24 +79,41 @@ import {
   ArcElement,
 } from 'chart.js'
 
-const resumen = [
-  { label: 'Inventarios', valor: 12, icon: 'bi-clipboard', color: 'bg-primary' },
-  { label: 'Equipos', valor: 256, icon: 'bi-pc', color: 'bg-success' },
-  { label: 'Oficinas', valor: 14, icon: 'bi-building', color: 'bg-secondary' },
-  { label: 'Desaparecidos', valor: 13, icon: 'bi-exclamation-triangle', color: 'bg-danger' },
-]
-
-
 ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
-const data = {
+const dashboard = reactive({
+  "total_inventarios": 0,
+  "total_equipos": 0,
+  "total_oficinas": 0,
+  "equipos_buenos": 0,
+  "equipos_regulares": 0,
+  "equipos_malogrados": 0,
+})
+
+
+onMounted(async () => {
+  try {
+    const response = await api.get('dashboard/')
+    Object.assign(dashboard, response.data)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
+const charData = computed(() => ({
   labels: ['Bueno', 'Regular', 'Malogrado'],
   datasets: [{
     label: 'Estado de Equipos',
-    data: [50, 20, 5],
+    data: [
+      dashboard.equipos_buenos,
+      dashboard.equipos_regulares,
+      dashboard.equipos_malogrados,
+    ],
     backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
-  }]
-}
+  }],
+}))
+
 
 </script>
 

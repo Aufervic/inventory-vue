@@ -19,11 +19,13 @@ onMounted(() => {
 
 async function crearEstado() {
     try {
-        //const response = await api.post('estados/', form)
         enviado.value = true
-        console.log('Estado creado con éxito:', undefined)
+        await api.post('estados/', form)
+        console.log('Estado creado con éxito')
     } catch (error) {
         console.error('Error al crear Estado:', error)
+    } finally {
+        loading.value = false
     }
 }
 

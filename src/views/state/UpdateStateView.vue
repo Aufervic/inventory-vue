@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 const props = defineProps(['id'])
 
@@ -16,17 +16,23 @@ const loading = ref(true)
 
 onMounted(async () => {
     loading.value = true
+    try{
+        const response = await api.get(`estados/${props.id}`)
+        Object.assign(form, response.data)
+    } catch (error){
+        console.error(error)
+    }
 })
 
 // Función al enviar el formulario
 async function actualizarUbicacion() {
     try {
-        //const response = await api.put(`estados/${props.id}`, form)
+        const response = await api.put(`estados/${props.id}/`, form)
         enviado.value = true
-        console.log('Estado actualizado con éxito:', undefined)
+        console.log('Estado actualizado con éxito:', response.data)
     } catch (error) {
         console.error('Error al actualizar Estado:', error)
-    }
+    } 
 }
 
 </script>

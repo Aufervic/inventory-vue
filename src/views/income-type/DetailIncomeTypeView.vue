@@ -1,15 +1,19 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-//import api from '@/services/api'
-
+import api from '@/services/api'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
 const tipoDeIngreso = ref({})
 
 
-onMounted(() => {
-    tipoDeIngreso.value = {id: props.id, nombre: "un Tipo Ingreso"}
+onMounted(async () => {
+    try {
+        const response = await api.get(`tipo-ingresos/${props.id}`)
+        tipoDeIngreso.value = response.data
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 

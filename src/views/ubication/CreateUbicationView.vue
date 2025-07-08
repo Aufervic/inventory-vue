@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 const form = reactive({
     id: '',
@@ -19,9 +19,9 @@ onMounted(() => {
 
 async function crearUbicacion() {
     try {
-        //const response = await api.post('ubicaciones/', form)
+        const response = await api.post('ubicaciones/', form)
         enviado.value = true
-        console.log('Ubicación creada con éxito:', undefined)
+        console.log('Ubicación creada con éxito:', response.data)
     } catch (error) {
         console.error('Error al crear Ubicación:', error)
     }

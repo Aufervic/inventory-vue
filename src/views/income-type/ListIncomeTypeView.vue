@@ -2,7 +2,7 @@
 // lista los tipos de ingresos
 
 import { ref, onMounted, watch, computed } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 // Paginación
 const filtro = ref('')
@@ -11,15 +11,13 @@ const porPagina = 4
 
 const tiposDeIngreso = ref([])
 
-onMounted(() => {
-    tiposDeIngreso.value = [
-        { id: 1, nombre: "Tipo de Ingreso 1" },
-        { id: 2, nombre: "Tipo de Ingreso 2" },
-        { id: 3, nombre: "Tipo de Ingreso 3" },
-        { id: 4, nombre: "Tipo de Ingreso 4" },
-        { id: 5, nombre: "Tipo de Ingreso 5" },
-        { id: 6, nombre: "Tipo de Ingreso 6" },
-    ]
+onMounted( async () => {
+    try {
+        const response = await api.get('tipo-ingresos/')
+        tiposDeIngreso.value = response.data
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 
@@ -35,7 +33,7 @@ async function eliminarTipoIngreso(tipoIngreso) {
     }
 
     try {
-        //await api.delete(`ingresos/${tipoIngreso.id}`);
+        await api.delete(`ingresos/${tipoIngreso.id}`);
         tiposDeIngreso.value = tiposDeIngreso.value.filter(e => e.id !== tipoIngreso.id);
         alert('Tipo de Ingreso eliminado correctamente.');
     } catch (error) {

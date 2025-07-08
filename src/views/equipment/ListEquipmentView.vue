@@ -10,11 +10,13 @@ const porPagina = 3
 
 
 
-onMounted(() => {
-  api
-    .get('equipos/')
-    .then(response => (equipos.value = response.data))
-    .catch(error => console.log(error))
+onMounted(async () => {
+  try {
+    const response = await api.get('equipos/')
+    equipos.value = response.data
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 
@@ -135,11 +137,8 @@ function buscarEquipos() {
                 <i class="bi bi-pencil"></i>
               </router-link>
 
-              <button
-                class="btn btn-sm btn-outline-danger"
-                title="Eliminar Equipo"
-                @click.prevent="eliminarEquipo(equipo)"
-                >
+              <button class="btn btn-sm btn-outline-danger" title="Eliminar Equipo"
+                @click.prevent="eliminarEquipo(equipo)">
                 <i class="bi bi-trash"></i>
               </button>
 

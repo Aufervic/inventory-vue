@@ -1,7 +1,7 @@
 <script setup>
 // Crear Nuevo Tipo de Ingreso
 import { reactive, ref, onMounted } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 const form = reactive({
     id: '',
@@ -20,9 +20,9 @@ onMounted(() => {
 
 async function crearTipoIngreso() {
     try {
-        //const response = await api.post('tipoingresos/', form)
+        const response = await api.post('tipo-ingresos/', form)
         enviado.value = true
-        console.log('Tipo de Ingreso creado con éxito:', undefined)
+        console.log('Tipo de Ingreso creado con éxito:', response.data)
     } catch (error) {
         console.error('Error al crear Tipo de Ingreso:', error)
     }

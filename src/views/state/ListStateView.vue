@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onMounted, computed, watch } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 // Paginación
 const filtro = ref('')
@@ -10,14 +10,13 @@ const porPagina = 4
 
 const estados = ref([])
 
-onMounted(() => {
-    estados.value = [
-        { id: 1, estado: "Estado 1" },
-        { id: 2, estado: "Estado 2" },
-        { id: 3, estado: "Estado 3" },
-        { id: 3, estado: "Estado 3" },
-        { id: 4, estado: "Estado 4" },
-    ]
+onMounted(async () => {
+    try {
+        const response = await api.get('estados/')
+        estados.value = response.data
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 // Reiniciar página al cambiar filtro
@@ -31,7 +30,7 @@ async function eliminarEstado(estado) {
     }
 
     try {
-        //await api.delete(`estados/${estado.id}`);
+        await api.delete(`estados/${estado.id}`);
         estados.value = estados.value.filter(e => e.id !== estado.id);
         alert('Estado eliminado correctamente.');
     } catch (error) {

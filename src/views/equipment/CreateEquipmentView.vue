@@ -3,7 +3,6 @@ import { reactive, ref, onMounted } from 'vue'
 import api from '@/services/api'
 
 const form = reactive({
-    id: '',
     codigo_patrimonial: '',
     descripcion: '',
     numero_serie: '',
@@ -16,7 +15,8 @@ const form = reactive({
     centro_costos: '',
     tipo_ingreso: '',
     estado: '',
-    ubicacion: ''
+    ubicacion: '',
+    responsable: '',
 })
 
 // Bandera para mostrar mensaje de éxito
@@ -26,16 +26,18 @@ const loading = ref(true)
 const tiposIngresos = ref([])
 const estados = ref([])
 const ubicaciones = ref([])
+const responsables = ref([])
 
 
 
 onMounted(async () => {
     try {
         loading.value = true
-        const [tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
+        const [tiposResponse, estadosResponse, ubicacionesResponse, responsablesResponse] = await Promise.all([
             api.get('tipo-ingresos/'),
             api.get('estados/'),
             api.get('ubicaciones/'),
+            api.get('responsables/'),
         ])
 
 
@@ -43,6 +45,7 @@ onMounted(async () => {
         tiposIngresos.value = tiposResponse.data
         estados.value = estadosResponse.data
         ubicaciones.value = ubicacionesResponse.data
+        responsables.value = responsablesResponse.data
 
     } catch (error) {
         console.error('Error al cargar datos', error)
@@ -148,6 +151,16 @@ async function crearEquipo() {
                         <option value="">Selecciona una Ubicación</option>
                         <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">{{
                             ubicacion.nombre }}</option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="responsable" class="form-label fw-bold">Responsable</label>
+                    <select id="responsable" class="form-select" v-model="form.responsable" required>
+                        <option value="">Selecciona un Responsable</option>
+                        <option v-for="responsable in responsables" :value="responsable.id" :key="responsable.id">{{
+                            responsable.nombre }}</option>
 
                     </select>
                 </div>

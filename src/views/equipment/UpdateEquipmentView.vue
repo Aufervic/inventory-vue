@@ -44,7 +44,6 @@ onMounted(async () => {
         form.tipo_ingreso = form.tipo_ingreso.id
         form.estado = form.estado.id
         form.ubicacion = form.ubicacion.id
-        //form = equipoResponse.data
         tiposIngresos.value = tiposResponse.data;
         estados.value = estadosResponse.data;
         ubicaciones.value = ubicacionesResponse.data;
@@ -52,7 +51,7 @@ onMounted(async () => {
     } catch (error) {
         console.error('Error al cargar Datos:', error)
     } finally {
-
+        loading.value = false
     }
 
 })

@@ -7,11 +7,13 @@ const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 const equipment = ref({})
 
 
-onMounted(() => {
-    api
-        .get(`equipos/${props.id}`)
-        .then(response => (equipment.value = response.data))
-        .catch(error => console.log(error))
+onMounted(async () => {
+    try {
+        const response = api.get(`equipos/${props.id}`)
+        equipment.value = (await response).data
+    }catch(error){
+        console.error(error)
+    }
 })
 
 // Clase de color según estado

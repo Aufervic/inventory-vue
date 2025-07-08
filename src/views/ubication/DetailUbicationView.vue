@@ -1,14 +1,19 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-//import axios from 'axios'
+import api from '@/services/api'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
 const ubicacion = ref({})
 
 
-onMounted(() => {
-    ubicacion.value = {id: props.id, nombre: "un nombre"}
+onMounted(async () => {
+    try{
+        const response = await api.get(`ubicaciones/${props.id}`)
+        ubicacion.value = response.data
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 
