@@ -9,7 +9,7 @@ const equipment = ref({})
 
 onMounted(async () => {
     try {
-        const response = api.get(`equipos/${props.id}`)
+        const response = api.get(`equipos/${props.id}?expand=estado,tipo_ingreso,ubicacion,responsable`)
         equipment.value = (await response).data
     }catch(error){
         console.error(error)
@@ -66,6 +66,7 @@ const estadoClase = computed(() => {
                                 <span :class="estadoClase">{{ equipment.estado?.estado }}</span>
                             </li>
                             <li class="list-group-item"><strong>Ubicación:</strong> {{ equipment.ubicacion?.nombre }} </li>
+                            <li class="list-group-item"><strong>Responsable:</strong> {{ equipment.responsable?.nombre +' '+equipment.responsable?.apellidos }} </li>
                         </ul>
                         <router-link to="/" class="btn btn-outline-primary btn-sm">← Volver</router-link>
                     </div>

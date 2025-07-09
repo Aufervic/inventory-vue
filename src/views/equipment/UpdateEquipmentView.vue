@@ -18,7 +18,8 @@ const form = reactive({
     centro_costos: '',
     tipo_ingreso: '',
     estado: '',
-    ubicacion: ''
+    ubicacion: '',
+    responsable: '',
 })
 
 // Bandera para mostrar mensaje de éxito
@@ -29,24 +30,24 @@ const loading = ref(true)
 const tiposIngresos = ref([]);
 const estados = ref([]);
 const ubicaciones = ref([]);
+const responsables = ref([])
 
 onMounted(async () => {
     try {
         loading.value = true
-        const [equipoResponse, tiposResponse, estadosResponse, ubicacionesResponse] = await Promise.all([
+        const [equipoResponse, tiposResponse, estadosResponse, ubicacionesResponse, responsablesResponse] = await Promise.all([
             api.get(`equipos/${props.id}`),
             api.get('tipo-ingresos/'),
             api.get('estados/'),
             api.get('ubicaciones/'),
+            api.get('responsables/'),
         ]);
 
-        Object.assign(form, equipoResponse.data);
-        form.tipo_ingreso = form.tipo_ingreso.id
-        form.estado = form.estado.id
-        form.ubicacion = form.ubicacion.id
-        tiposIngresos.value = tiposResponse.data;
-        estados.value = estadosResponse.data;
-        ubicaciones.value = ubicacionesResponse.data;
+        Object.assign(form, equipoResponse.data)
+        tiposIngresos.value = tiposResponse.data
+        estados.value = estadosResponse.data
+        ubicaciones.value = ubicacionesResponse.data
+        responsables.value = responsablesResponse.data
 
     } catch (error) {
         console.error('Error al cargar Datos:', error)
@@ -59,7 +60,7 @@ onMounted(async () => {
 // Función al enviar el formulario
 async function actualizarEquipo() {
     try {
-        const response = await api.put(`equipos/${props.id}`, form)
+        const response = await api.put(`equipos/${props.id}/`, form)
         enviado.value = true
         console.log('Equipo actualizado con éxito:', response.data)
     } catch (error) {
@@ -129,15 +130,6 @@ async function actualizarEquipo() {
                 <input type="text" id="centro-costos" class="form-control" v-model="form.centro_costos" required />
             </div>
 
-            <!-- Campo email -->
-            <!--
-            
-             <div class="mb-3">
-                 <label for="email" class="form-label fw-bold">Correo electrónico</label>
-                 <input type="email" id="email" class="form-control" v-model="form.email" required />
-             </div>
-             -->
-
             <div class="mb-3">
                 <label for="tipo_ingreso" class="form-label fw-bold">Tipo de Ingreso</label>
                 <select id="tipo_ingreso" class="form-select" v-model="form.tipo_ingreso" required>
@@ -161,6 +153,16 @@ async function actualizarEquipo() {
                         ubicacion.nombre }}</option>
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="responsable" class="form-label fw-bold">Responsable</label>
+                <select id="responsable" class="form-select" v-model="form.responsable" required>
+                    <option value="">Selecciona un Responsable</option>
+                    <option v-for="responsable in responsables" :value="responsable.id" :key="responsable.id">{{
+                        responsable.nombre }}</option>
+                </select>
+            </div>
+
 
             <!-- Botón de envío -->
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 const filtro = ref('')
 const paginaActual = ref(1)
@@ -8,16 +8,13 @@ const porPagina = 4
 
 const movimientos = ref([])
 
-onMounted(() => {
-  movimientos.value = [
-    { id: 1, fecha_movimiento: "2025-06-17", observaciones: "Una observación God", id_equipo_id: 1, ubicacion_id: 1 },
-    { id: 2, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-    { id: 3, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-    { id: 4, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-    { id: 5, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-    { id: 6, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-    { id: 7, fecha_movimiento: "2025-06-18", observaciones: "Otra observación God", id_equipo_id: 2, ubicacion_id: 3 },
-  ]
+onMounted(async () => {
+  try {
+    const response = await api.get('movimientos/')
+    movimientos.value = response.data
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 // Reiniciar página al cambiar filtro
@@ -33,7 +30,7 @@ async function eliminarMovimiento(movimiento) {
   }
 
   try {
-    //await api.delete(`movimientos/${movimiento.id}`);
+    await api.delete(`movimientos/${movimiento.id}`);
     movimientos.value = movimientos.value.filter(e => e.id !== movimiento.id);
     alert('Movimiento eliminado correctamente');
   } catch (error) {
@@ -48,10 +45,10 @@ const movimientosFiltrados = computed(() => {
   const f = filtro.value.toLowerCase()
   return movimientos.value.filter(
     (m) =>
-      m.fecha_movimiento.toLowerCase().includes(f) ||
-      m.observaciones.toLowerCase().includes(f) ||
-      ("" + m.id_equipo_id).toLowerCase().includes(f) ||
-      ("" + m.ubicacion_id).toLowerCase().includes(f)
+      m.fecha_movimiento?.toLowerCase().includes(f) ||
+      m.observaciones?.toLowerCase().includes(f) ||
+      ("" + m.id_equipo).toLowerCase().includes(f) ||
+      ("" + m.ubicacion).toLowerCase().includes(f)
   )
 })
 
@@ -108,8 +105,8 @@ const movimientosPaginados = computed(() => {
             <td>{{ movimiento.id }}</td>
             <td>{{ movimiento.fecha_movimiento }}</td>
             <td>{{ movimiento.observaciones }}</td>
-            <td>{{ movimiento.id_equipo_id }}</td>
-            <td>{{ movimiento.ubicacion_id }}</td>
+            <td>{{ movimiento.id_equipo }}</td>
+            <td>{{ movimiento.ubicacion }}</td>
 
             <td class="text-center">
               <router-link :to="`/movement/${movimiento.id}`" class="btn btn-sm btn-outline-primary me-1"

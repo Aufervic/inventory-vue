@@ -1,18 +1,17 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-//import axios from 'axios'
+import { ref, onMounted } from 'vue'
+import api from '@/services/api'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
 const movimiento = ref({})
 
-
-onMounted(() => {
-    movimiento.value = {
-        fecha_movimiento: "2025-06-18",
-        observaciones: "Un buena observación",
-        id_equipo_id: 1,
-        ubicacion_id: 1,
+onMounted(async() => {
+    try{
+        const response = await api.get(`movimientos/${props.id}`)
+        movimiento.value = response.data
+    } catch (error) {
+        console.error(error)
     }
 })
 
@@ -32,8 +31,8 @@ onMounted(() => {
                             <li class="list-group-item"><strong>ID:</strong> {{ movimiento.id }}</li>
                             <li class="list-group-item"><strong>Fecha del movimiento:</strong> {{ movimiento.fecha_movimiento }}</li>
                             <li class="list-group-item"><strong>Observaciones:</strong> {{ movimiento.observaciones }}</li>
-                            <li class="list-group-item"><strong>Equipo:</strong> {{ movimiento.id_equipo_id }}</li>
-                            <li class="list-group-item"><strong>Ubicación:</strong> {{ movimiento.ubicacion_id }}</li>
+                            <li class="list-group-item"><strong>Equipo:</strong> {{ movimiento.id_equipo }}</li>
+                            <li class="list-group-item"><strong>Ubicación:</strong> {{ movimiento.ubicacion }}</li>
                         </ul>
                         <router-link to="/movement" class="btn btn-outline-primary btn-sm">← Volver</router-link>
                     </div>

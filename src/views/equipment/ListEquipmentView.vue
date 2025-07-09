@@ -12,7 +12,7 @@ const porPagina = 3
 
 onMounted(async () => {
   try {
-    const response = await api.get('equipos/')
+    const response = await api.get('equipos/?expand=estado,tipo_ingreso,ubicacion,responsable')
     equipos.value = response.data
   } catch (error) {
     console.error(error)
@@ -76,7 +76,7 @@ function buscarEquipos() {
     <form class="mb-3" @submit.prevent="buscarEquipos">
       <div class="row g-2">
         <div class="col-md-6">
-          <input type="text" v-model="filtro" class="form-control" placeholder="Buscar por nombre, código, etc." />
+          <input type="text" v-model="filtro" class="form-control" placeholder="Buscar por código patrimonial, marca, modelo, etc." />
         </div>
         <div class="col-auto">
           <button class="btn btn-primary" type="submit">
@@ -105,6 +105,7 @@ function buscarEquipos() {
             <th>Tipo de Ingreso</th>
             <th>Estado</th>
             <th>Ubicación</th>
+            <th>Responsable</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
@@ -125,6 +126,7 @@ function buscarEquipos() {
             <td>{{ equipo.tipo_ingreso.nombre }}</td>
             <td>{{ equipo.estado.estado }}</td>
             <td>{{ equipo.ubicacion.nombre }}</td>
+            <td>{{ equipo.responsable.nombre }}</td>
 
             <td class="text-center">
               <router-link :to="`/equipment/${equipo.id}`" class="btn btn-sm btn-outline-primary me-1"

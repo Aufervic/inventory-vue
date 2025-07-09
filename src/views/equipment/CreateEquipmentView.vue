@@ -40,8 +40,6 @@ onMounted(async () => {
             api.get('responsables/'),
         ])
 
-
-
         tiposIngresos.value = tiposResponse.data
         estados.value = estadosResponse.data
         ubicaciones.value = ubicacionesResponse.data

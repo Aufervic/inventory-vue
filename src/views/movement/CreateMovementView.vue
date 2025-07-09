@@ -1,13 +1,13 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-//import api from '@/services/api'
+import api from '@/services/api'
 
 const form = reactive({
     id: '',
     fecha_movimiento: '',
     observaciones: '',
-    id_equipo_id: '',
-    ubicacion_id: '',
+    id_equipo: '',
+    ubicacion: '',
 })
 
 // Bandera para mostrar mensaje de éxito
@@ -18,18 +18,16 @@ const equipos = ref([])
 const ubicaciones = ref([])
 
 
-
-
 onMounted(async () => {
     try {
         loading.value = true
-        /*const [equiposResponse, ubicacionesResponse] = await Promise.all([
+        const [equiposResponse, ubicacionesResponse] = await Promise.all([
             api.get('equipos/'),
             api.get('ubicaciones/'),
-        ])*/
+        ])
 
-        equipos.value = []
-        ubicaciones.value = []
+        equipos.value = equiposResponse.data
+        ubicaciones.value = ubicacionesResponse.data
 
     } catch (error) {
         console.error('Error al cargar datos', error)
@@ -41,9 +39,9 @@ onMounted(async () => {
 
 async function crearMovimiento() {
     try {
-        //const response = await api.post('movimientos/', form)
+        const response = await api.post('movimientos/', form)
         enviado.value = true
-        console.log('Movimiento creado con éxito:', undefined)
+        console.log('Movimiento creado con éxito:', response.data)
     } catch (error) {
         console.error('Error al crear Movimiento:', error)
     }
@@ -70,7 +68,7 @@ async function crearMovimiento() {
 
                 <div class="mb-3">
                     <label for="equipo" class="form-label fw-bold">Equipo</label>
-                    <select id="equipo" class="form-select" v-model="form.id_equipo_id" required>
+                    <select id="equipo" class="form-select" v-model="form.id_equipo" required>
                         <option value="">Selecciona un Equipo</option>
                         <option v-for="equipo in equipos" :value="equipo.id" :key="equipo.id">{{ equipo.codigo_patrimonial }}
                         </option>
@@ -78,7 +76,7 @@ async function crearMovimiento() {
                 </div>
                 <div class="mb-3">
                     <label for="ubicacion" class="form-label fw-bold">Ubicación</label>
-                    <select id="ubicacion" class="form-select" v-model="form.ubicacion_id" required>
+                    <select id="ubicacion" class="form-select" v-model="form.ubicacion" required>
                         <option value="">Selecciona una Ubicación</option>
                         <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">{{
                             ubicacion.nombre }}</option>
