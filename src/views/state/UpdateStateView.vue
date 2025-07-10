@@ -39,6 +39,7 @@ async function actualizarUbicacion() {
 
 <template>
     <div class="container mt-4">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2>Actualizar Estado</h2>
 
         <form @submit.prevent="actualizarUbicacion">

@@ -15,7 +15,8 @@ const loading = ref(true)
 
 
 onMounted(async () => {
-    form.value = {id: props.id, nombre: "Un nombre de Tipo de Ingreso"}
+    const response = await api.get(`tipo-ingresos/${props.id}`)
+    Object.assign(form, response.data)
     loading.value = true
 })
 
@@ -34,6 +35,7 @@ async function actualizarTipoIngreso() {
 
 <template>
     <div class="container mt-4">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2>Actualizar Tipo de Ingreso</h2>
 
         <form @submit.prevent="actualizarTipoIngreso">

@@ -11,7 +11,7 @@ onMounted(async () => {
     try {
         const response = await api.get(`responsables/${props.id}`)
         responsable.value = response.data
-    } catch(error){
+    } catch (error) {
         console.error(error)
     }
 })
@@ -23,6 +23,7 @@ onMounted(async () => {
 <template>
 
     <div class="container mt-5">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2 class="mb-4">Detalles del Responsable</h2>
 
         <div v-if="responsable" class="card shadow-sm border-0">
@@ -35,16 +36,23 @@ onMounted(async () => {
 
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h4 class="card-title text-primary">{{ responsable.nombre }}</h4>
+                         <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title text-primary mb-0">{{ responsable.nombre }}</h4>
+                            <button @click="$router.push({ name: 'UpdateResponsible', params: { id: responsable.id } })"
+                                class="btn btn-success btn-sm">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                        </div>
+
                         <ul class="list-group list-group-flush mb-3">
                             <li class="list-group-item"><strong>ID:</strong> {{ responsable.id }}</li>
                             <li class="list-group-item"><strong>Nombre:</strong> {{ responsable.nombre }}</li>
                             <li class="list-group-item"><strong>Apellidos:</strong> {{ responsable.apellidos }}</li>
                             <li class="list-group-item"><strong>DNI:</strong> {{ responsable.dni }}</li>
                             <li class="list-group-item"><strong>Celular:</strong> {{ responsable.celular }}</li>
-                            
+
                         </ul>
-                        <router-link to="/" class="btn btn-outline-primary btn-sm">← Volver</router-link>
+                        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm">← Volver</button>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@ const movimientos = ref([])
 
 onMounted(async () => {
   try {
-    const response = await api.get('movimientos/')
+    const response = await api.get('movimientos/?expand=equipo,ubicacion')
     movimientos.value = response.data
   } catch (error) {
     console.log(error)
@@ -30,7 +30,7 @@ async function eliminarMovimiento(movimiento) {
   }
 
   try {
-    await api.delete(`movimientos/${movimiento.id}`);
+    await api.delete(`movimientos/${movimiento.id}/`);
     movimientos.value = movimientos.value.filter(e => e.id !== movimiento.id);
     alert('Movimiento eliminado correctamente');
   } catch (error) {
@@ -47,8 +47,8 @@ const movimientosFiltrados = computed(() => {
     (m) =>
       m.fecha_movimiento?.toLowerCase().includes(f) ||
       m.observaciones?.toLowerCase().includes(f) ||
-      ("" + m.id_equipo).toLowerCase().includes(f) ||
-      ("" + m.ubicacion).toLowerCase().includes(f)
+      m.id_equipo.codigo_patrimonial.toLowerCase().includes(f) ||
+      m.ubicacion.nombre.toLowerCase().includes(f)
   )
 })
 
@@ -60,7 +60,6 @@ const movimientosPaginados = computed(() => {
   const inicio = (paginaActual.value - 1) * porPagina
   return movimientosFiltrados.value.slice(inicio, inicio + porPagina)
 })
-
 
 </script>
 
@@ -105,8 +104,8 @@ const movimientosPaginados = computed(() => {
             <td>{{ movimiento.id }}</td>
             <td>{{ movimiento.fecha_movimiento }}</td>
             <td>{{ movimiento.observaciones }}</td>
-            <td>{{ movimiento.id_equipo }}</td>
-            <td>{{ movimiento.ubicacion }}</td>
+            <td>{{ movimiento.id_equipo.codigo_patrimonial }}</td>
+            <td>{{ movimiento.ubicacion.nombre }}</td>
 
             <td class="text-center">
               <router-link :to="`/movement/${movimiento.id}`" class="btn btn-sm btn-outline-primary me-1"

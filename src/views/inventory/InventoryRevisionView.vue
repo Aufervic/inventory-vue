@@ -1,5 +1,6 @@
 <template>
     <div class="container mt-3">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2>Inventariado - {{ inventario.nombre }}</h2>
 
         <div class="row g-3 align-items-end">

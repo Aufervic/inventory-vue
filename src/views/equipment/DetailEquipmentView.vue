@@ -11,24 +11,24 @@ onMounted(async () => {
     try {
         const response = api.get(`equipos/${props.id}?expand=estado,tipo_ingreso,ubicacion,responsable`)
         equipment.value = (await response).data
-    }catch(error){
+    } catch (error) {
         console.error(error)
     }
 })
 
 // Clase de color según estado
 const estadoClase = computed(() => {
-  if (!equipment.value) return ''
-  switch (equipment.value.estado) {
-    case 'Activo':
-      return 'badge bg-success'
-    case 'En reparación':
-      return 'badge bg-warning text-dark'
-    case 'Inactivo':
-      return 'badge bg-secondary'
-    default:
-      return 'badge bg-light text-dark'
-  }
+    if (!equipment.value) return ''
+    switch (equipment.value.estado) {
+        case 'Activo':
+            return 'badge bg-success'
+        case 'En reparación':
+            return 'badge bg-warning text-dark'
+        case 'Inactivo':
+            return 'badge bg-secondary'
+        default:
+            return 'badge bg-light text-dark'
+    }
 })
 
 </script>
@@ -36,6 +36,7 @@ const estadoClase = computed(() => {
 <template>
 
     <div class="container mt-5">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2 class="mb-4">Detalles del Equipo</h2>
 
         <div v-if="equipment" class="card shadow-sm border-0">
@@ -48,27 +49,41 @@ const estadoClase = computed(() => {
 
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h4 class="card-title text-primary">{{ equipment.codigo_patrimonial }}</h4>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title text-primary mb-0">{{ equipment.codigo_patrimonial }}</h4>
+                            <button @click="$router.push({ name: 'UpdateEquipment', params: { id: equipment.id } })"
+                                class="btn btn-success btn-sm">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                        </div>
+
                         <ul class="list-group list-group-flush mb-3">
                             <li class="list-group-item"><strong>ID:</strong> {{ equipment.id }}</li>
-                            <li class="list-group-item"><strong>Código Patrimonial:</strong> {{ equipment.codigo_patrimonial }}</li>
+                            <li class="list-group-item"><strong>Código Patrimonial:</strong> {{
+                                equipment.codigo_patrimonial }}</li>
                             <li class="list-group-item"><strong>Descripción:</strong> {{ equipment.descripcion }}</li>
-                            <li class="list-group-item"><strong>Número de Serie:</strong> {{ equipment.numero_serie }}</li>
+                            <li class="list-group-item"><strong>Número de Serie:</strong> {{ equipment.numero_serie }}
+                            </li>
                             <li class="list-group-item"><strong>Marca:</strong> {{ equipment.marca }}</li>
                             <li class="list-group-item"><strong>Modelo:</strong> {{ equipment.modelo }}</li>
                             <li class="list-group-item"><strong>Fecha de Alta:</strong> {{ equipment.fecha_alta }}</li>
-                            <li class="list-group-item"><strong>Fecha de Compra:</strong> {{ equipment.fecha_compra }}</li>
+                            <li class="list-group-item"><strong>Fecha de Compra:</strong> {{ equipment.fecha_compra }}
+                            </li>
                             <li class="list-group-item"><strong>Número OC:</strong> {{ equipment.numero_o_c }}</li>
                             <li class="list-group-item"><strong>Número NEA:</strong> {{ equipment.numero_nea }}</li>
-                            <li class="list-group-item"><strong>Centro de Costos:</strong> {{ equipment.centro_costos }}</li>
-                            <li class="list-group-item"><strong>Tipo de Ingreso:</strong> {{ equipment.tipo_ingreso?.nombre }} </li>
+                            <li class="list-group-item"><strong>Centro de Costos:</strong> {{ equipment.centro_costos }}
+                            </li>
+                            <li class="list-group-item"><strong>Tipo de Ingreso:</strong> {{
+                                equipment.tipo_ingreso?.nombre }} </li>
                             <li class="list-group-item"><strong>Estado:</strong>
                                 <span :class="estadoClase">{{ equipment.estado?.estado }}</span>
                             </li>
-                            <li class="list-group-item"><strong>Ubicación:</strong> {{ equipment.ubicacion?.nombre }} </li>
-                            <li class="list-group-item"><strong>Responsable:</strong> {{ equipment.responsable?.nombre +' '+equipment.responsable?.apellidos }} </li>
+                            <li class="list-group-item"><strong>Ubicación:</strong> {{ equipment.ubicacion?.nombre }}
+                            </li>
+                            <li class="list-group-item"><strong>Responsable:</strong> {{ equipment.responsable?.nombre
+                                + ' ' +equipment.responsable?.apellidos }} </li>
                         </ul>
-                        <router-link to="/" class="btn btn-outline-primary btn-sm">← Volver</router-link>
+                        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm">← Volver</button>
                     </div>
                 </div>
             </div>

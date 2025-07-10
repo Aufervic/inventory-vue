@@ -71,13 +71,13 @@ const revisionInventariosPaginados = computed(() => {
 <template>
   <div class="container-fluid">
     <h1 class="mb-4">
-      <i class="bi bi-laptop me-2"></i> Revision de Inventario
+      <i class="bi bi-laptop me-2"></i> Revisión de Inventario
     </h1>
 
     <!-- Botón agregar -->
     <div class="mb-3 text-end">
       <router-link to="/inventory-review/new" class="btn btn-success">
-        <i class="bi bi-plus-circle me-1"></i> Nueva Revision de Inventario
+        <i class="bi bi-plus-circle me-1"></i> Nueva Revisión de Inventario
       </router-link>
     </div>
 

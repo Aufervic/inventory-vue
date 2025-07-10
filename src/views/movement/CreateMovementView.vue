@@ -51,6 +51,7 @@ async function crearMovimiento() {
 
 <template>
     <div class="container mt-4">
+        <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm mb-3">← Volver</button>
         <h2>Crear Movimiento Nuevo</h2>
         <div v-if="loading">Cargando datos</div>
         <div v-else>
