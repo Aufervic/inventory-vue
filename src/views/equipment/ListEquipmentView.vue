@@ -72,21 +72,13 @@ function buscarEquipos() {
       </router-link>
     </div>
 
-    <!-- Formulario de búsqueda -->
-    <form class="mb-3" @submit.prevent="buscarEquipos">
-      <div class="row g-2">
-        <div class="col-md-6">
-          <input type="text" v-model="filtro" class="form-control" placeholder="Buscar por código patrimonial, marca, modelo, etc." />
-        </div>
-        <div class="col-auto">
-          <button class="btn btn-primary" type="submit">
-            <i class="bi bi-search me-1"></i> Buscar
-          </button>
-        </div>
-      </div>
-    </form>
+    <!-- búsqueda -->
+     <div class="mb-3">
+      <input v-model="filtro" type="text" class="form-control"
+        placeholder="Buscar por código patrimonial, marca, modelo, etc." />
+    </div>
 
-    <!-- Tabla -->
+     <!-- Tabla -->
     <div class="table-responsive">
       <table class="table table-striped table-bordered table-hover align-middle">
         <thead class="table-dark">

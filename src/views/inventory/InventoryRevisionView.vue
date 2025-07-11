@@ -43,10 +43,10 @@
 
         <h5 class="mt-4">Equipos registrados:</h5>
         <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-success me-2" @click="exportarAExcel(revisiones)">
+            <button class="btn btn-outline-success me-2" @click="exportarExcel(revisiones)">
                 <i class="bi bi-file-earmark-excel"></i> Excel
             </button>
-            <button class="btn btn-outline-danger" @click="exportarAPDF(revisiones)">
+            <button class="btn btn-outline-danger" @click="exportarPDF(revisiones)">
                 <i class="bi bi-file-earmark-pdf"></i> PDF
             </button>
         </div>
@@ -116,7 +116,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ToastAlert from '@/components/ui/ToastAlert.vue'
-import * as XLSX from 'xlsx'
+import ExcelJS from 'exceljs'
+import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
@@ -271,20 +272,147 @@ onMounted(async () => {
 })
 
 
-function exportarAExcel(data, nombreArchivo = 'reporte_inventario') {
-    const worksheet = XLSX.utils.json_to_sheet(data)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Inventario')
-    XLSX.writeFile(workbook, `${nombreArchivo}.xlsx`)
+async function exportarExcel(data, inventarioNombre = 'Inventario', filename = 'reporte_inventario') {
+    const workbook = new ExcelJS.Workbook()
+    const sheet = workbook.addWorksheet('Revisiones')
+
+    // 🧾 1. Título principal
+    sheet.mergeCells('A1', 'H1') // combinamos de A1 a H1
+    const tituloCell = sheet.getCell('A1')
+    tituloCell.value = 'Reporte de Revisión de Equipos'
+    tituloCell.font = { size: 16, bold: true }
+    tituloCell.alignment = { vertical: 'middle', horizontal: 'center' }
+
+    // 🗓️ 2. Subtítulo con nombre de inventario y fecha
+    sheet.mergeCells('A2', 'H2')
+    const fechaCell = sheet.getCell('A2')
+    fechaCell.value = `Inventario: ${inventarioNombre}`
+    fechaCell.font = { italic: true }
+    fechaCell.alignment = { horizontal: 'right' }
+
+
+    sheet.mergeCells('A3', 'H3')
+    const fechaCell2 = sheet.getCell('A3')
+    fechaCell2.value = `Fecha de generación: ${new Date().toLocaleDateString()}`
+    fechaCell2.font = { italic: true }
+    fechaCell2.alignment = { horizontal: 'right' }
+
+    // Espacio vacío antes de tabla
+    sheet.addRow([])
+
+    // 🧱 3. Encabezados de la tabla con clave
+
+    const headerRow = sheet.addRow([
+        'Nro', 'Inventario', 'Equipo', 'Ubicación', 'Estado',
+        'Encontrado', 'Observaciones', 'Fecha'
+    ])
+    headerRow.eachCell(cell => {
+        cell.font = { bold: true }
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFE0F7FA' }
+        }
+        cell.alignment = { vertical: 'middle', horizontal: 'center' }
+        cell.border = {
+            top: { style: 'thin' },
+            bottom: { style: 'thin' },
+            left: { style: 'thin' },
+            right: { style: 'thin' }
+        }
+    })
+
+    sheet.columns = [
+        { key: 'nro', width: 6 },
+        { key: 'inventario_id', width: 15 },
+        { key: 'equipo_id', width: 15 },
+        { key: 'ubicacion_ercontrada', width: 20 },
+        { key: 'estado_encontrado', width: 15 },
+        { key: 'encontrado', width: 12 },
+        { key: 'observaciones', width: 30 },
+        { key: 'fecha_revision', width: 15 },
+    ]
+
+
+    // 🧮 4. Agregar datos
+    data.forEach((item, index) => {
+        sheet.addRow({
+            nro: index + 1,
+            ...item,
+            inventario_id: Number(item.inventario_id),
+            equipo_id: Number(item.equipo_id),
+            ubicacion_ercontrada: Number(item.ubicacion_ercontrada),
+            estado_encontrado: Number(item.estado_encontrado),
+            encontrado: item.encontrado ? 'Sí' : 'No',
+        })
+    })
+
+
+    // 📦 7. Descargar
+    const buffer = await workbook.xlsx.writeBuffer()
+    const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+
+    saveAs(blob, filename)
 }
 
-function exportarAPDF(data, nombreArchivo = 'reporte_inventario'){
+function exportarPDF(data, inventarioNombre = 'Inventario', filename = 'reporte_inventario.pdf') {
     const doc = new jsPDF()
+
+    // 🧾 1. Título principal
+    doc.setFontSize(16)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Reporte de Revisión de Equipos', 105, 20, { align: 'center' })
+
+    // 🗓️ 2. Subtítulo con nombre del inventario y fecha
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.text(`Inventario: ${inventarioNombre}`, 14, 30)
+    doc.text(`Fecha de generación: ${new Date().toLocaleDateString()}`, 14, 36)
+
+    // 📋 3. Datos para tabla
+    const body = data.map((item, index) => [
+        index + 1,
+        item.inventario_id,
+        item.equipo_id,
+        item.ubicacion_ercontrada,
+        item.estado_encontrado,
+        item.encontrado ? 'Sí' : 'No',
+        item.observaciones,
+        item.fecha_revision
+    ])
+
+    // 📑 4. Generar tabla
     autoTable(doc, {
-        head: [['ID', 'Equipo', 'Ubicación', 'Estado', 'aufer']],
-        body: data.map(r => [r.id, r.equipo_id, r.ubicacion_ercontrada, r.estado_encontrado])
+        startY: 45, // posición inicial
+        head: [[
+            'Nro', 'Inventario', 'Equipo', 'Ubicación', 'Estado',
+            'Encontrado', 'Observaciones', 'Fecha'
+        ]],
+        body: body,
+        styles: {
+            fontSize: 9,
+            cellPadding: 3,
+            valign: 'middle'
+        },
+        headStyles: {
+            fillColor: [22, 160, 133], // verde azulado
+            textColor: [255, 255, 255],
+            halign: 'center',
+            fontStyle: 'bold'
+        },
+        columnStyles: {
+            0: { halign: 'center', cellWidth: 10 },  // Nro
+            1: { halign: 'center' }, // Inventario
+            2: { halign: 'center' }, // Equipo
+            5: { halign: 'center' }, // Encontrado
+            7: { halign: 'center' }, // Fecha
+        }
     })
-    doc.save(`${nombreArchivo}.pdf`)
+
+    // 💾 5. Guardar PDF
+    doc.save(filename)
 }
 
 </script>
