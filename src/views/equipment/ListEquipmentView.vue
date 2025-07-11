@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api'
+import { formatearFecha } from '@/utils/fechas'
 
 const equipos = ref([])
 
@@ -110,8 +111,8 @@ function buscarEquipos() {
             <td>{{ equipo.numero_serie }}</td>
             <td>{{ equipo.marca }}</td>
             <td>{{ equipo.modelo }}</td>
-            <td>{{ equipo.fecha_alta }}</td>
-            <td>{{ equipo.fecha_compra }}</td>
+            <td>{{ formatearFecha(equipo.fecha_alta) }}</td>
+            <td>{{ formatearFecha(equipo.fecha_compra) }}</td>
             <td>{{ equipo.numero_o_c }}</td>
             <td>{{ equipo.numero_nea }}</td>
             <td>{{ equipo.centro_costos }}</td>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
 //import api from '@/services/api'
+import { formatearFecha } from '@/utils/fechas'
 
 const revisionInventarios = ref([])
 
@@ -15,20 +16,20 @@ onMounted(() => {
     .then(response => (revisionInventarios.value = response.data))
     .catch(error => console.log(error))*/
   revisionInventarios.value = [
-    {id: 1, inventario_id: 1, equipo_id: 1, ubicacion_ercontrada: 1, estado_encontrado: 1, encontrado: true, correccion_datos: false, observaciones: "observacion 1", fecha_revision: "2025-06-30"},
-    {id: 2, inventario_id: 2, equipo_id: 2, ubicacion_ercontrada: 2, estado_encontrado: 2, encontrado: true, correccion_datos: false, observaciones: "observacion 2", fecha_revision: "2025-06-30"},
-    {id: 3, inventario_id: 3, equipo_id: 3, ubicacion_ercontrada: 3, estado_encontrado: 3, encontrado: true, correccion_datos: false, observaciones: "observacion 3", fecha_revision: "2025-06-30"},
-    {id: 4, inventario_id: 4, equipo_id: 4, ubicacion_ercontrada: 4, estado_encontrado: 4, encontrado: true, correccion_datos: false, observaciones: "observacion 4", fecha_revision: "2025-06-30"},
-    {id: 5, inventario_id: 5, equipo_id: 5, ubicacion_ercontrada: 5, estado_encontrado: 5, encontrado: true, correccion_datos: false, observaciones: "observacion 5", fecha_revision: "2025-06-30"},
-    {id: 6, inventario_id: 6, equipo_id: 6, ubicacion_ercontrada: 6, estado_encontrado: 6, encontrado: true, correccion_datos: false, observaciones: "observacion 6", fecha_revision: "2025-06-30"},
-    {id: 7, inventario_id: 7, equipo_id: 7, ubicacion_ercontrada: 7, estado_encontrado: 7, encontrado: true, correccion_datos: false, observaciones: "observacion 7", fecha_revision: "2025-06-30"},
-    {id: 8, inventario_id: 8, equipo_id: 8, ubicacion_ercontrada: 8, estado_encontrado: 8, encontrado: true, correccion_datos: false, observaciones: "observacion 8", fecha_revision: "2025-06-30"},
+    { id: 1, inventario_id: 1, equipo_id: 1, ubicacion_ercontrada: 1, estado_encontrado: 1, encontrado: true, correccion_datos: false, observaciones: "observacion 1", fecha_revision: "2025-06-30" },
+    { id: 2, inventario_id: 2, equipo_id: 2, ubicacion_ercontrada: 2, estado_encontrado: 2, encontrado: true, correccion_datos: false, observaciones: "observacion 2", fecha_revision: "2025-06-30" },
+    { id: 3, inventario_id: 3, equipo_id: 3, ubicacion_ercontrada: 3, estado_encontrado: 3, encontrado: true, correccion_datos: false, observaciones: "observacion 3", fecha_revision: "2025-06-30" },
+    { id: 4, inventario_id: 4, equipo_id: 4, ubicacion_ercontrada: 4, estado_encontrado: 4, encontrado: true, correccion_datos: false, observaciones: "observacion 4", fecha_revision: "2025-06-30" },
+    { id: 5, inventario_id: 5, equipo_id: 5, ubicacion_ercontrada: 5, estado_encontrado: 5, encontrado: true, correccion_datos: false, observaciones: "observacion 5", fecha_revision: "2025-06-30" },
+    { id: 6, inventario_id: 6, equipo_id: 6, ubicacion_ercontrada: 6, estado_encontrado: 6, encontrado: true, correccion_datos: false, observaciones: "observacion 6", fecha_revision: "2025-06-30" },
+    { id: 7, inventario_id: 7, equipo_id: 7, ubicacion_ercontrada: 7, estado_encontrado: 7, encontrado: true, correccion_datos: false, observaciones: "observacion 7", fecha_revision: "2025-06-30" },
+    { id: 8, inventario_id: 8, equipo_id: 8, ubicacion_ercontrada: 8, estado_encontrado: 8, encontrado: true, correccion_datos: false, observaciones: "observacion 8", fecha_revision: "2025-06-30" },
   ]
 })
 
 // Reiniciar página al cambiar filtro
 watch(filtro, () => {
-    paginaActual.value = 1
+  paginaActual.value = 1
 })
 
 async function eliminarRevisionInventario(revInventario) {
@@ -50,7 +51,7 @@ const revisionInventariosFiltrados = computed(() => {
   const f = filtro.value.toLowerCase()
   return revisionInventarios.value.filter(
     (ri) =>
-      ("" +ri.id).toLowerCase().includes(f) ||
+      ("" + ri.id).toLowerCase().includes(f) ||
       ri.observaciones.toLowerCase().includes(f) ||
       ri.fecha_revision.toLowerCase().includes(f)
   )
@@ -82,9 +83,10 @@ const revisionInventariosPaginados = computed(() => {
     </div>
 
     <!-- Formulario de búsqueda -->
-     <div class="mb-3">
-            <input v-model="filtro" type="text" class="form-control" placeholder="Buscar por ID, fecha de revision, observaciones." />
-        </div>
+    <div class="mb-3">
+      <input v-model="filtro" type="text" class="form-control"
+        placeholder="Buscar por ID, fecha de revision, observaciones." />
+    </div>
 
 
     <!-- Tabla -->
@@ -117,7 +119,7 @@ const revisionInventariosPaginados = computed(() => {
             <td>{{ revInventario.encontrado }}</td>
             <td>{{ revInventario.correccion_datos }}</td>
             <td>{{ revInventario.observaciones }}</td>
-            <td>{{ revInventario.fecha_revision }}</td>
+            <td>{{ formatearFecha(revInventario.fecha_revision) }}</td>
 
             <td class="text-center">
               <router-link :to="`/inventory-review/${revInventario.id}`" class="btn btn-sm btn-outline-primary me-1"
@@ -125,16 +127,13 @@ const revisionInventariosPaginados = computed(() => {
                 <i class="bi bi-eye"></i>
               </router-link>
 
-              <router-link :to="`/inventory-review/update/${revInventario.id}`" class="btn btn-sm btn-outline-success me-1"
-                title="Editar Revision Inventario">
+              <router-link :to="`/inventory-review/update/${revInventario.id}`"
+                class="btn btn-sm btn-outline-success me-1" title="Editar Revision Inventario">
                 <i class="bi bi-pencil"></i>
               </router-link>
 
-              <button
-                class="btn btn-sm btn-outline-danger"
-                title="Eliminar Revision Inventario"
-                @click.prevent="eliminarRevisionInventario(revInventario)"
-                >
+              <button class="btn btn-sm btn-outline-danger" title="Eliminar Revision Inventario"
+                @click.prevent="eliminarRevisionInventario(revInventario)">
                 <i class="bi bi-trash"></i>
               </button>
 

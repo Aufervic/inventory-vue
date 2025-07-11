@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 //import api from '@/services/api'
+import { formatearFecha } from '@/utils/fechas'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
@@ -41,9 +42,9 @@ onMounted(() => {
                         <ul class="list-group list-group-flush mb-3">
                             <li class="list-group-item"><strong>ID:</strong> {{ inventario.id }}</li>
                             <li class="list-group-item"><strong>Nombre:</strong> {{ inventario.nombre }}</li>
-                            <li class="list-group-item"><strong>Fecha de Inicio:</strong> {{ inventario.fecha_inicio }}
+                            <li class="list-group-item"><strong>Fecha de Inicio:</strong> {{ formatearFecha(inventario.fecha_inicio) }}
                             </li>
-                            <li class="list-group-item"><strong>Fecha Fin:</strong> {{ inventario.fecha_fin }}</li>
+                            <li class="list-group-item"><strong>Fecha Fin:</strong> {{ formatearFecha(inventario.fecha_fin) }}</li>
                             <li class="list-group-item"><strong>Descripción:</strong> {{ inventario.descripcion }}</li>
                         </ul>
                         <button @click="$router.go(-1)" class="btn btn-outline-primary btn-sm">← Volver</button>

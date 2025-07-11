@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 //import api from '@/services/api'
+import { formatearFecha } from '@/utils/fechas'
 
 const props = defineProps(['id'])  // Recibes el parámetro `id` como prop
 
@@ -82,7 +83,7 @@ const estadoClase = computed(() => {
                                 }}</li>
                             <li class="list-group-item"><strong>Observaciones:</strong> {{
                                 revisionInventario.observaciones }}</li>
-                            <li class="list-group-item"><strong>Fecha:</strong> {{ revisionInventario.fecha_revision }}
+                            <li class="list-group-item"><strong>Fecha:</strong> {{ formatearFecha(revisionInventario.fecha_revision) }}
                             </li>
                             
                         </ul>

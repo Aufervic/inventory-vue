@@ -81,7 +81,7 @@
                         <td>{{ revision.correccion_datos ? 'SI' : 'NO' }}</td>
                         <td>{{ revision.observaciones.length > 10 ? revision.observaciones.substring(0, 10) + '...' :
                             revision.observaciones }}</td>
-                        <td>{{ revision.fecha_revision }}</td>
+                        <td>{{ formatearFecha(revision.fecha_revision) }}</td>
 
                         <td class="text-center">
                             <router-link :to="`/inventory-review/${revision.id}`"
@@ -120,6 +120,7 @@ import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import { formatearFecha } from '@/utils/fechas'
 
 
 const route = useRoute()

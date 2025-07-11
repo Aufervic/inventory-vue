@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 //import api from '@/services/api'
+import { formatearFecha } from '@/utils/fechas'
 
 const filtro = ref('')
 const paginaActual = ref(1)
@@ -110,8 +111,8 @@ const inventariosPaginados = computed(() => {
             <td>{{ index + 1 + (paginaActual - 1) * porPagina }}</td>
             <td>{{ inventario.id }}</td>
             <td>{{ inventario.nombre }}</td>
-            <td>{{ inventario.fecha_inicio }}</td>
-            <td>{{ inventario.fecha_fin }}</td>
+            <td>{{ formatearFecha(inventario.fecha_inicio) }}</td>
+            <td>{{ formatearFecha(inventario.fecha_fin) }}</td>
             <td>{{ inventario.descripcion }}</td>
 
             <td class="text-center">
